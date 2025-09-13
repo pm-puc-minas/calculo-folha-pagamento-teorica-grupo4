@@ -11,6 +11,8 @@ public class Gestao {
 
     private ArrayList<Funcionario> funcionarios= new ArrayList<>();
     private Administrador administrador;
+
+    
     public ArrayList<Funcionario> getFuncionarios() {
         return funcionarios;
     }
