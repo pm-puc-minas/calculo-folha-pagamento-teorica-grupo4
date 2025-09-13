@@ -1,0 +1,16 @@
+package com.trabalho.backend.service.calculoAdicionaisService;
+
+import org.springframework.stereotype.Service;
+import com.trabalho.backend.model.CalculoAdicionais;
+import com.trabalho.backend.model.Funcionario;
+
+@Service
+public class CalcularInsalubridade implements CalculoAdicionais {
+
+    @Override
+    public double calcularAdicional(Funcionario f){
+        return 2.00;  //o valor é fiticio, apenas um exemeplo
+    }
+
+    
+}

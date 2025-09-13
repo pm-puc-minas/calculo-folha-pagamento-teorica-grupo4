@@ -15,40 +15,11 @@ public class GestaoService {
         funcionarios.add(f);
     }
 
-    //metodo para calcular salario por hora
-    public void calcularSalarioHora(){}
-
-    //metodo para calcular periculosidade
-    public void calcularPericulosidade(){}
-
-
-    //metodo para calcular Insalubridade
-    public void calcularInsalubridade(){}
-
-    //metodo para calcular vale Transporte
-    public void calcularValeTransporte(){}
-
-
-    //metodo para calcular vale Alimentação
-    public void calcularAlimentacao(){}
-
-    //metodo para calcular o desconto do inss
-    public void calcularDescontoINSS(){}
-
-    //metodo para calcular FGTS
-    public void calcularFGTS(){}
-
-    //metodo para calcular desconto do IRRF
-    public void calcularDescontoIRRF(){}
-
-    //metodo para calcular salario liquido
-    public void calcularLiquido(){}
-
+    //metodo para gerar uma folha de Pagamento
+    public String gerarFolhaPagamento(Funcionario f){return "Folha Pagamento"; }
 
     //metodo para gerar um pdf
-
-    //metodo para calcular salario por hora
-    public void gerarPDF(FolhaPagamentoService folha){}
+    public void gerarPDF(){}
     
     
     
