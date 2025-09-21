@@ -9,8 +9,15 @@ public class CalcularPericulosidade implements CalculoAdicionais {
 
     @Override
     public double calcularAdicional(Funcionario f){
-        return 2.00;  //o valor é fiticio, apenas um exemeplo
+
+        if(!f.isPericulosidade()){
+            return 0.0;
+        }
+
+        return f.getSalarioBase() * 0.30;
     }
 
-    
 }
+
+
+

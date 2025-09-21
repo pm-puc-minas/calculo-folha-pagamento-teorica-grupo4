@@ -11,6 +11,7 @@ public class Funcionario extends Usuario {
     private Long idFuncionario;
     private String cargo;
     private Double salarioBase;
+    private Double cargaHorariaDiaria;
     private int horasTrabalhadas;
     private int diasTrabalhadasSemana;
     private LocalDate dataAdmissao;
@@ -50,5 +51,15 @@ public class Funcionario extends Usuario {
     public GrauInsalubridade getInsalubridade() {
         return insalubridade;
     }
+    public Double getCargaHorariaDiaria() {
+        return cargaHorariaDiaria;
+    }
+
+    // metodo de periculosidade
+    public boolean isPericulosidade(){
+        return periculosidade;
+    }
+
+    
     
 }
