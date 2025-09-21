@@ -7,10 +7,25 @@ import com.trabalho.backend.model.Funcionario;
 @Service
 public class CalcularSalarioHora implements CalculoAdicionais {
 
+
+    // atributo global
+    private static final double semanaMes= 4.5;
+
     @Override
     public double calcularAdicional(Funcionario f){
-        return 2.00;  //o valor é fiticio, apenas um exemeplo
-    }
+        double jornadaSemanal= f.getCargaHorariaDiaria() *f.getDiasTrabalhadasSemana();
 
-    
+        // verificar a carga a horaria diaria
+        if(f.getCargaHorariaDiaria() > 8 ){
+            throw new IllegalArgumentException("Carga Horária excedida pelo CLT");
+        }
+        if(jornadaSemanal>44){
+            throw new IllegalArgumentException("Carga Horária semanal excedida pelo CLT");
+        }
+
+        double jornadaMensal= jornadaSemanal * semanaMes;
+
+        return f.getSalarioBase() / jornadaMensal;
+    } 
+
 }
