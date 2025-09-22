@@ -10,6 +10,11 @@ public class CalcularFGTS implements CalculoDescontos {
 
     @Override
     public double calcularDesconto(Funcionario f){
-        return 2.00; //é um valor fiticio, apenas um exemplo
+        if (f.getSalarioBase() == null){
+            return 0.0;
+        }
+
+        return f.getSalarioBase() * 0.08;
+
     }
 }
