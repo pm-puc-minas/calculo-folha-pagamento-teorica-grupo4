@@ -1,19 +1,33 @@
 package com.trabalho.backend.service.calculoDescontosService;
 
 import org.springframework.stereotype.Service;
-import com.trabalho.backend.model.CalculoAdicionais;
+
+import com.trabalho.backend.model.CalculoDescontos;
 import com.trabalho.backend.model.Funcionario;
 
 @Service
-public class CalcularValeAlime implements CalculoAdicionais{
+public class CalcularValeAlime implements CalculoDescontos{
 
     @Override
-    public double calcularAdicional(Funcionario f){
-        if(f.getDiasTrabalhadasSemana() <= 0){
+    public double calcularDesconto(Funcionario f){
+
+        // veriica se o funcionario recebe o vale alimentação
+        if(f.getReceberValeAlimentacao()== false){
             return 0.0;
-        } else {
-            return f.getDiasTrabalhadasSemana() * 24.00;
         }
+
+        //evitar valores negativos
+        if (f.getCustoDiarioAlimentacao() <= 0 || f.getDiasTrabalhadasMes() <= 0) {
+            return 0.0;
+        }
+
+        // calcular o desconto
+        double valeAlimentacao= f.getDiasTrabalhadasMes() * f.getCustoDiarioAlimentacao();
+
+        return valeAlimentacao;
+        
+
+
     }
 }
 
