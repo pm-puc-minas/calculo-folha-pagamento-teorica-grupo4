@@ -9,12 +9,7 @@ import com.trabalho.backend.model.Funcionario;
 @Service
 public class CalcularValeTrans implements CalculoDescontos {
 
-    private final CalcularSalarioBruto salarioBruto;
 
-    @Autowired
-    public CalcularValeTrans(CalcularSalarioBruto salarioBruto){
-        this.salarioBruto= salarioBruto;
-    }
 
     @Override
     public double calcularDesconto(Funcionario f){
@@ -24,7 +19,7 @@ public class CalcularValeTrans implements CalculoDescontos {
         }
 
         // calcular o teto de 6% sobre o salario bruto
-        double teto= this.salarioBruto.calcularSalarioBruto(f)*0.06;
+        double teto= f.getSalarioBase() * 0.06;
 
         // guardar o custo real do funcionario em uma variavel
         double custoTotalTransporte= f.getCustoValeTransporte();
