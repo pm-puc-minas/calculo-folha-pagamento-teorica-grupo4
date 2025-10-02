@@ -14,10 +14,12 @@ public class Funcionario extends Usuario {
     private Double cargaHorariaDiaria;
     private int horasTrabalhadas;
     private int diasTrabalhadasSemana;
+    private int diasTrabalhadasMes;
     private LocalDate dataAdmissao;
     private Boolean receberValeTransporte;
     private Boolean receberValeAlimentacao;
     private Double custoValeTransporte;
+    private Double custoDiarioAlimentacao;
     private Boolean periculosidade;
     private GrauInsalubridade insalubridade;
 
@@ -63,10 +65,12 @@ public class Funcionario extends Usuario {
     public Double getCustoValeTransporte() {
         return custoValeTransporte;
     }
+    public Double getCustoDiarioAlimentacao() {
+        return custoDiarioAlimentacao;
+    }
+    public int getDiasTrabalhadasMes() {
+        return diasTrabalhadasMes;
+    }
 
-
-    
-
-    
     
 }
