@@ -6,11 +6,28 @@ import com.trabalho.backend.model.CalculoDescontos;
 import com.trabalho.backend.model.Funcionario;
 
 @Service
-public class CalcularValeAlime implements CalculoDescontos {
+public class CalcularValeAlime implements CalculoDescontos{
 
     @Override
     public double calcularDesconto(Funcionario f){
-        return 2.00; //é um valor fiticio, apenas um exemplo
+
+        // veriica se o funcionario recebe o vale alimentação
+        if(f.getReceberValeAlimentacao()== false){
+            return 0.0;
+        }
+
+        //evitar valores negativos
+        if (f.getCustoDiarioAlimentacao() <= 0 || f.getDiasTrabalhadasMes() <= 0) {
+            return 0.0;
+        }
+
+        // calcular o desconto
+        double valeAlimentacao= f.getDiasTrabalhadasMes() * f.getCustoDiarioAlimentacao();
+
+        return valeAlimentacao;
+        
+
+
     }
 }
 

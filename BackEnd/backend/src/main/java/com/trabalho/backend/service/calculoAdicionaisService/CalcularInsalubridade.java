@@ -16,9 +16,9 @@ public class CalcularInsalubridade implements CalculoAdicionais {
         if(f.getInsalubridade() == GrauInsalubridade.ALTO){
             return SALARIO_MINIMO * 0.40;
         } else if(f.getInsalubridade() == GrauInsalubridade.MEDIO){
-            return SALARIO_MINIMO * 0.40;
+            return SALARIO_MINIMO * 0.20;
         } else if(f.getInsalubridade() == GrauInsalubridade.BAIXO){
-            return SALARIO_MINIMO * 0.40;
+            return SALARIO_MINIMO * 0.10;
         } else {
             return 0.0; // se não tiver risco, retorna sem adicional
         }

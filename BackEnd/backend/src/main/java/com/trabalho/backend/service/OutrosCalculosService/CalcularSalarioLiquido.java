@@ -1,4 +1,4 @@
-package com.trabalho.backend.service.calculoAdicionaisService;
+package com.trabalho.backend.service.OutrosCalculosService;
 
 import org.springframework.stereotype.Service;
 import com.trabalho.backend.model.CalculoAdicionais;
