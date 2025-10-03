@@ -22,6 +22,8 @@ public class Funcionario extends Usuario {
     private Double custoDiarioAlimentacao;
     private Boolean periculosidade;
     private GrauInsalubridade insalubridade;
+    private OpcaoAdicional Insalu;
+    private OpcaoAdicional periculo;
 
     //getters
     public Long getIdFuncionario() {
@@ -62,6 +64,11 @@ public class Funcionario extends Usuario {
     public boolean isPericulosidade(){
         return periculosidade;
     }
+
+    //metodo de insalubridade
+    public GrauInsalubridade isInsalubridade(){
+        return insalubridade;
+    }
     public Double getCustoValeTransporte() {
         return custoValeTransporte;
     }
@@ -71,6 +78,14 @@ public class Funcionario extends Usuario {
     public int getDiasTrabalhadasMes() {
         return diasTrabalhadasMes;
     }
+    public OpcaoAdicional getInsalu() {
+        return Insalu;
+    }
+    public OpcaoAdicional getPericulo() {
+        return periculo;
+    }
+
+    
 
     
 }
