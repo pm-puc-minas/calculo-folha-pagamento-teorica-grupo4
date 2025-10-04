@@ -19,32 +19,26 @@ export const routes = [
     pages: [
       {
         icon: <HomeIcon {...icon} />,
-        name: "dashboard",
+        name: "Início",
         path: "/home",
         element: <Home />,
       },
       {
         icon: <UserCircleIcon {...icon} />,
-        name: "profile",
+        name: "Perfil",
         path: "/profile",
         element: <Profile />,
       },
       {
         icon: <TableCellsIcon {...icon} />,
-        name: "tables",
-        path: "/tables",
+        name: "Funcionários",
+        path: "/funcionarios",
         element: <Tables />,
-      },
-      {
-        icon: <InformationCircleIcon {...icon} />,
-        name: "notifications",
-        path: "/notifications",
-        element: <Notifications />,
       },
     ],
   },
   {
-    title: "auth pages",
+    title: "Cadastro",
     layout: "auth",
     pages: [
       {
@@ -53,10 +47,11 @@ export const routes = [
         path: "/sign-in",
         element: <SignIn />,
       },
+      
       {
         icon: <RectangleStackIcon {...icon} />,
         name: "Cadastrar Funcionários",
-        path: "/sign-up",
+        path: "/cadastrar_funcionarios",
         element: <SignUp />,
       },
     ],
