@@ -9,7 +9,7 @@ public class CalcularValeTrans implements CalculoDescontos {
 
     private final TotalSalarioBruto totalSalarioBruto;
 
-    // Construtor para injeção de dependência
+    // aplivando o D do SOLID pra adiantar o trabalho da sprint 3 ou 4
     public CalcularValeTrans(TotalSalarioBruto totalSalarioBruto) {
         this.totalSalarioBruto = totalSalarioBruto;
     }
@@ -28,7 +28,7 @@ public class CalcularValeTrans implements CalculoDescontos {
         // Guardar o custo real do funcionário em uma variável
         double custoTotalTransporte = f.getCustoValeTransporte();
 
-        // Comparar os dois valores e retornar o menor
+        // se o teto for menor retorna esee, caso contrario retorna o custo do transporte
         return Math.min(teto, custoTotalTransporte);
     }
 }
