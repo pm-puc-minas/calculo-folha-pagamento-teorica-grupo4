@@ -36,17 +36,14 @@ public class CalcularINSS implements CalculoDescontos {
             double valorNestaFaixa = Math.min(salarioInicial, limiteFaixa1); // esse math min retorna o menor numero entre dois elementos
             descontoTotal += valorNestaFaixa * 0.075; // o menor numero extraido é adicionado nessa varíavel
         }
-        
         if (salarioInicial > limiteFaixa1) {
             double valorNestaFaixa = Math.min(salarioInicial - limiteFaixa1, limiteFaixa2 - limiteFaixa1);
             descontoTotal += valorNestaFaixa * 0.09;
         }
-        // Faixa 3
         if (salarioInicial > limiteFaixa2) {
             double valorNestaFaixa = Math.min(salarioInicial - limiteFaixa2, limiteFaixa3 - limiteFaixa2);
             descontoTotal += valorNestaFaixa * 0.12;
         }
-        // Faixa 4
         if (salarioInicial > limiteFaixa3) {
             double valorNestaFaixa = salarioInicial - limiteFaixa3;
             descontoTotal += valorNestaFaixa * 0.14;
