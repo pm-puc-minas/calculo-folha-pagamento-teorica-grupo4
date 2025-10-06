@@ -7,7 +7,7 @@ import com.trabalho.backend.model.Funcionario;
 @Service
 public class CalcularSalarioHora implements CalculoAdicionais {
 
-
+    TotalSalarioBruto salarioBruto = new TotalSalarioBruto();
     // atributo global
     private static final double semanaMes= 4.5;
 
@@ -25,7 +25,7 @@ public class CalcularSalarioHora implements CalculoAdicionais {
 
         double jornadaMensal= jornadaSemanal * semanaMes;
 
-        return f.getSalarioBase() / jornadaMensal;
+        return salarioBruto.calcularSalarioTotalBruto(f) / jornadaMensal;
     } 
 
 }
