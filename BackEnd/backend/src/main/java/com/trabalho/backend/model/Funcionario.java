@@ -88,10 +88,56 @@ public class Funcionario extends Usuario {
     public int getDependentes() {
         return dependentes;
     }
+    public void setIdFuncionario(Long idFuncionario) {
+        this.idFuncionario = idFuncionario;
+    }
+    public void setCargo(String cargo) {
+        this.cargo = cargo;
+    }
+    public void setSalarioBase(Double salarioBase) {
+        this.salarioBase = salarioBase;
+    }
+    public void setCargaHorariaDiaria(Double cargaHorariaDiaria) {
+        this.cargaHorariaDiaria = cargaHorariaDiaria;
+    }
+    public void setHorasTrabalhadas(int horasTrabalhadas) {
+        this.horasTrabalhadas = horasTrabalhadas;
+    }
+    public void setDiasTrabalhadasSemana(int diasTrabalhadasSemana) {
+        this.diasTrabalhadasSemana = diasTrabalhadasSemana;
+    }
+    public void setDiasTrabalhadasMes(int diasTrabalhadasMes) {
+        this.diasTrabalhadasMes = diasTrabalhadasMes;
+    }
+    public void setDataAdmissao(LocalDate dataAdmissao) {
+        this.dataAdmissao = dataAdmissao;
+    }
+    public void setReceberValeTransporte(Boolean receberValeTransporte) {
+        this.receberValeTransporte = receberValeTransporte;
+    }
+    public void setReceberValeAlimentacao(Boolean receberValeAlimentacao) {
+        this.receberValeAlimentacao = receberValeAlimentacao;
+    }
+    public void setCustoValeTransporte(Double custoValeTransporte) {
+        this.custoValeTransporte = custoValeTransporte;
+    }
+    public void setCustoDiarioAlimentacao(Double custoDiarioAlimentacao) {
+        this.custoDiarioAlimentacao = custoDiarioAlimentacao;
+    }
+    public void setPericulosidade(Boolean periculosidade) {
+        this.periculosidade = periculosidade;
+    }
+    public void setInsalubridade(GrauInsalubridade insalubridade) {
+        this.insalubridade = insalubridade;
+    }
+    public void setInsalu(OpcaoAdicional insalu) {
+        Insalu = insalu;
+    }
+    public void setPericulo(OpcaoAdicional periculo) {
+        this.periculo = periculo;
+    }
+    public void setDependentes(int dependentes) {
+        this.dependentes = dependentes;
+    }
 
-    
-
-    
-
-    
 }
