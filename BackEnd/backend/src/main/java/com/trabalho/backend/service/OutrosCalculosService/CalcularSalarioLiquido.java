@@ -34,23 +34,23 @@ public class CalcularSalarioLiquido {
 
     public double calcularLiquido(Funcionario funcionario) {
         
-        // 1. Pega o Salário Bruto
+        // armazenando o salario bruto
         double salarioBruto = SalarioBruto.calcularSalarioTotalBruto(funcionario);
         
-        // 2. Calcula o desconto do INSS (primeiro desconto obrigatório)
+        // armazenar o inss
         double descontoINSS = calcularINSS.calcularDesconto(funcionario);
         
-        // 3. Usa o resultado do INSS para calcular o IRRF
+        // armazenar o IRRF
         double descontoIRRF = calcularIRRF.calcularDesconto(funcionario);
         
-        // 4. Calcula os outros descontos
+        // armazenar o VA e VT
         double descontoAlimentacao = calcularValeAlime.calcularDesconto(funcionario);
         double descontoTransporte = calcularValeTrans.calcularDesconto(funcionario);
         
-        // 5. Soma todas as deduções
+        // domar deduções
         double totalDeducoes = descontoINSS + descontoIRRF + descontoAlimentacao + descontoTransporte;
         
-        // 6. Calcula o valor final
+        // calcular o salario liquido
         double salarioLiquido = salarioBruto - totalDeducoes;
         
         return salarioLiquido;
