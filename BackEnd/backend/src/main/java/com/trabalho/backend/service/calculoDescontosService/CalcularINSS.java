@@ -54,6 +54,6 @@ public class CalcularINSS implements CalculoDescontos {
             descontoTotal += valorNestaFaixa * 0.14;
         }
 
-        return Math.round(descontoTotal * 100.0) / 100.0;
+        return (descontoTotal * 100.0) / 100.0;
     }
 }
