@@ -24,6 +24,7 @@ public class Funcionario extends Usuario {
     private GrauInsalubridade insalubridade;
     private OpcaoAdicional Insalu;
     private OpcaoAdicional periculo;
+    private int dependentes;
 
     //getters
     public Long getIdFuncionario() {
@@ -84,6 +85,11 @@ public class Funcionario extends Usuario {
     public OpcaoAdicional getPericulo() {
         return periculo;
     }
+    public int getDependentes() {
+        return dependentes;
+    }
+
+    
 
     
 
