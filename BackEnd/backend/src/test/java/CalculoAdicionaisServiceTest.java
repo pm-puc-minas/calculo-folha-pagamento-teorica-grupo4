@@ -1,64 +1,78 @@
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.trabalho.backend.model.Funcionario;
+import com.trabalho.backend.model.GrauInsalubridade;
 import com.trabalho.backend.model.OpcaoAdicional;
+import com.trabalho.backend.service.calculoAdicionaisService.CalcularInsalubridade;
 import com.trabalho.backend.service.calculoAdicionaisService.CalcularPericulosidade;
 
 public class CalculoAdicionaisServiceTest {
 
     @Test
-    @DisplayName("Deve calcular corretamente o adicional de periculosidade quando ativado")
-    void deveCalcularPericulosidadeCorretamente() {
-        // Arrange – configurar o cenário de teste
-        Funcionario funcionario = new Funcionario();
-        funcionario.setSalarioBase(3000.00);
-        funcionario.setPericulo(OpcaoAdicional.SIM);
+    @DisplayName("Deve calcular corretamente insalubridade e periculosidade em todos os cenários, incluindo casos inválidos")
+    void testarCalculoDeAdicionais() {
+        Funcionario f = new Funcionario();
+        CalcularInsalubridade calcInsalubridade = new CalcularInsalubridade();
+        CalcularPericulosidade calcPericulosidade = new CalcularPericulosidade();
 
-        CalcularPericulosidade calcularPericulosidade = new CalcularPericulosidade();
+        // Caso 1: Insalubridade ALTA e Periculosidade SIM
+        f.setSalarioBase(3000.00);
+        f.setInsalubridade(GrauInsalubridade.ALTO);
+        f.setPericulo(OpcaoAdicional.SIM);
 
-        // Act – executar o cálculo
-        double resultado = calcularPericulosidade.calcularAdicional(funcionario);
+        double adicionalInsalubridade = calcInsalubridade.calcularAdicional(f);
+        double adicionalPericulosidade = calcPericulosidade.calcularAdicional(f);
 
-        // Assert – verificar se o resultado está correto (30% de 3000 = 900)
-        assertEquals(900.00, resultado, 0.0001,
-                "O adicional de periculosidade deve ser 30% do salário base");
-    }
+        assertEquals(552.24, adicionalInsalubridade, 0.01, "ALTO deve ser 40% de 1380.60");
+        assertEquals(900.00, adicionalPericulosidade, 0.01, "30% do salário base (3000)");
 
-    @Test
-    @DisplayName("Não deve aplicar adicional de periculosidade quando não selecionado")
-    void naoDeveAplicarPericulosidadeQuandoNaoSelecionado() {
-        // Arrange
-        Funcionario funcionario = new Funcionario();
-        funcionario.setSalarioBase(3000.00);
-        funcionario.setPericulo(OpcaoAdicional.NAO);
+        // Caso 2: Insalubridade MÉDIA e Periculosidade NÃO
+        f.setInsalubridade(GrauInsalubridade.MEDIO);
+        f.setPericulo(OpcaoAdicional.NAO);
 
-        CalcularPericulosidade calcularPericulosidade = new CalcularPericulosidade();
+        adicionalInsalubridade = calcInsalubridade.calcularAdicional(f);
+        adicionalPericulosidade = calcPericulosidade.calcularAdicional(f);
 
-        // Act
-        double resultado = calcularPericulosidade.calcularAdicional(funcionario);
+        assertEquals(276.12, adicionalInsalubridade, 0.01, "MÉDIO deve ser 20% de 1380.60");
+        assertEquals(0.0, adicionalPericulosidade, 0.01, "Sem periculosidade retorna 0");
 
-        // Assert
-        assertEquals(0.0, resultado, 0.0001,
-                "Quando periculosidade for 'NAO', o adicional deve ser zero");
-    }
+        // Caso 3: Insalubridade BAIXA
+        f.setInsalubridade(GrauInsalubridade.BAIXO);
+        adicionalInsalubridade = calcInsalubridade.calcularAdicional(f);
+        assertEquals(138.06, adicionalInsalubridade, 0.01, "BAIXO deve ser 10% de 1380.60");
 
-    @Test
-    @DisplayName("Deve retornar zero se o salário base for zero")
-    void deveRetornarZeroSeSalarioBaseForZero() {
-        // Arrange
-        Funcionario funcionario = new Funcionario();
-        funcionario.setSalarioBase(0.0);
-        funcionario.setPericulo(OpcaoAdicional.SIM);
+        // Caso 4: Nenhuma insalubridade e nenhuma periculosidade
+        f.setInsalubridade(null);
+        f.setPericulo(OpcaoAdicional.NAO);
+        adicionalInsalubridade = calcInsalubridade.calcularAdicional(f);
+        adicionalPericulosidade = calcPericulosidade.calcularAdicional(f);
 
-        CalcularPericulosidade calcularPericulosidade = new CalcularPericulosidade();
+        assertEquals(0.0, adicionalInsalubridade, 0.01, "Sem insalubridade retorna 0");
+        assertEquals(0.0, adicionalPericulosidade, 0.01, "Sem periculosidade retorna 0");
 
-        // Act
-        double resultado = calcularPericulosidade.calcularAdicional(funcionario);
+        // Caso 5: Salário negativo (inválido)
+        f.setSalarioBase(-2000.00);
+        f.setInsalubridade(GrauInsalubridade.ALTO);
+        f.setPericulo(OpcaoAdicional.SIM);
 
-        // Assert
-        assertEquals(0.0, resultado, 0.0001,
-                "Mesmo com periculosidade 'SIM', salário base zero deve resultar em adicional zero");
+        adicionalInsalubridade = calcInsalubridade.calcularAdicional(f);
+        adicionalPericulosidade = calcPericulosidade.calcularAdicional(f);
+
+        assertEquals(552.24, adicionalInsalubridade, 0.01, "Insalubridade deve ignorar salário negativo");
+        assertEquals(-600.00, adicionalPericulosidade, 0.01, "Periculosidade reflete valor negativo (30% de -2000)");
+
+        // Caso 6: Salário nulo (zero)
+        f.setSalarioBase(0.0);
+        f.setInsalubridade(GrauInsalubridade.ALTO);
+        f.setPericulo(OpcaoAdicional.SIM);
+
+        adicionalInsalubridade = calcInsalubridade.calcularAdicional(f);
+        adicionalPericulosidade = calcPericulosidade.calcularAdicional(f);
+
+        assertEquals(552.24, adicionalInsalubridade, 0.01, "Insalubridade independe do salário base");
+        assertEquals(0.0, adicionalPericulosidade, 0.01, "Periculosidade de salário 0 deve ser 0");
     }
 }
