@@ -42,7 +42,7 @@ Também foi adicionada uma dependência no `pom.xml` para suporte aos testes uni
 
 ### 🔹 RF7 – Calcular FGTS
 - Verificar cálculo de **8% sobre o salário bruto**.  
-- Testar salário bruto **0** → retorno deve ser **0**.  
+- Testar salário bruto **0** → deve retornar **0**.  
 
 ### 🔹 RF8 – Calcular Desconto de IRRF
 - Testar funcionário **sem dependentes** e com **dependentes**.  
