@@ -16,8 +16,8 @@ public class Funcionario extends Usuario {
     private int diasTrabalhadasSemana;
     private int diasTrabalhadasMes;
     private LocalDate dataAdmissao;
-    private Boolean receberValeTransporte;
-    private Boolean receberValeAlimentacao;
+    private Boolean receberValeTransporte=false;
+    private Boolean receberValeAlimentacao=false;
     private Double custoValeTransporte;
     private Double custoDiarioAlimentacao;
     private Boolean periculosidade;
