@@ -9,10 +9,8 @@ Também foi adicionada uma dependência no `pom.xml` para suporte aos testes uni
 
 ## 2. Planejamento
 
-### 🔹 RF1 – Calcular Salário Hora
-- Verificar se o cálculo do salário por hora está correto quando a jornada é **200h/mês**.  
-- Testar com jornadas diferentes (**220h/mês, 180h/mês**) e validar o resultado.  
-- Garantir que, se o salário bruto for **0**, o resultado também seja **0**.  
+### 🔹 RF1 – Total de Salário Bruto
+- Verificar salário e adicionais, caso não tenha, deve retornar 0.   
 
 ### 🔹 RF2 – Calcular Periculosidade
 - Verificar cálculo de **30% do salário bruto**.  
