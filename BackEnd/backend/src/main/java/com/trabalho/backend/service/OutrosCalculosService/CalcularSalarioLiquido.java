@@ -11,7 +11,7 @@ import com.trabalho.backend.service.calculoDescontosService.CalcularValeTrans;
 @Service
 public class CalcularSalarioLiquido {
 
-    // Injetando as dependências via construtor (o jeito certo no Spring)
+    // colocar o principio D
     private final TotalSalarioBruto SalarioBruto;
     private final CalcularINSS calcularINSS;
     private final CalcularIRRF calcularIRRF;
