@@ -17,24 +17,28 @@ Também foi adicionada uma dependência no `pom.xml` para suporte aos testes uni
 ### 🔹 RF2 – Calcular Periculosidade
 - Verificar cálculo de **30% do salário bruto**.  
 - Testar valores **negativos**.  
+- Se não tiver periculosidade, deve retornar 0.
 
 ### 🔹 RF3 – Calcular Insalubridade
 - Testar os **três níveis de risco** do salário mínimo.  
 - Verificar cálculo correto quando **não há insalubridade** → retorno deve ser **0**.  
-- Validar com **salário mínimo atualizado**.  
+- Validar com **salário mínimo atualizado**. 
+- Se não tiver insalubridade, deve retornar 0.
 
 ### 🔹 RF4 – Calcular Vale Transporte
 - Quando o valor recebido é **menor que 6% do salário bruto** → descontar **o valor recebido**.  
 - Quando o valor recebido é **igual ou maior que 6%** → descontar exatamente **6% do bruto**.  
+- Se não tiver vale transporte, deve retornar 0.
 
 ### 🔹 RF5 – Calcular Vale Alimentação
 - Validar cálculo de **dias úteis × valor diário**.  
-- Garantir que o benefício seja **gratuito** (sem desconto).  
+- Garantir que o benefício seja **gratuito** (sem desconto).
+- Se não tiver vale alimentação, deve retornar 0.
 
 ### 🔹 RF6 – Calcular Desconto de INSS
 - Verificar cálculo progressivo para cada **faixa salarial da tabela**.  
 - Testar salário no **teto** (deve parar no limite).  
-- Testar salário **acima do teto** (deve considerar só até o teto).  
+- Testar salário **acima do teto** (deve considerar só até o teto).
 
 ### 🔹 RF7 – Calcular FGTS
 - Verificar cálculo de **8% sobre o salário bruto**.  
@@ -42,7 +46,8 @@ Também foi adicionada uma dependência no `pom.xml` para suporte aos testes uni
 
 ### 🔹 RF8 – Calcular Desconto de IRRF
 - Testar funcionário **sem dependentes** e com **dependentes**.  
-- Testar salário **abaixo do limite de isenção** → retorno deve ser **0**.  
+- Testar salário **abaixo do limite de isenção** → retorno deve ser **0**.
+- Se o salário for 0.0, deve retornar 0.
 
 ### 🔹 RF9 – Calcular Salário Líquido
 - Validar se o salário líquido é calculado como:  
