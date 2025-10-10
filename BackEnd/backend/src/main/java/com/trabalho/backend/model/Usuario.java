@@ -7,7 +7,7 @@ import jakarta.persistence.Entity;
 public abstract class Usuario {
 
     private String nome;
-    private String email;
+    private String cpf;
 
 
     // construtor(opcional)
@@ -16,16 +16,21 @@ public abstract class Usuario {
     public String getNome() {
         return nome;
     }
-    public String getEmail() {
-        return email;
-    }
-
+    
     public void setNome(String nome) {
         this.nome = nome;
     }
-    public void setEmail(String email) {
-        this.email = email;
+
+    public String getCpf() {
+        return cpf;
     }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    
+    
 
 }
     

@@ -6,8 +6,9 @@ import jakarta.persistence.Entity;
 public class Administrador extends Usuario {
 
     private Long idAdministrador;
+    private String email;
     private String senha;
-    private String cpf;
+    
 
     public Long getId() {
         return idAdministrador;
@@ -29,13 +30,14 @@ public class Administrador extends Usuario {
         this.senha = senha;
     }
 
-    public String getCpf() {
-        return cpf;
+    public String getEmail() {
+        return email;
     }
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
+    public void setEmail(String email) {
+        this.email = email;
     }
+    
     
     
 }
