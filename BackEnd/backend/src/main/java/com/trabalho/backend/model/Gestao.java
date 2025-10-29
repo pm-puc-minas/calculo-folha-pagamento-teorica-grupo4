@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import jakarta.persistence.Entity;
 
 
-@Entity
+
 public class Gestao {
 
 

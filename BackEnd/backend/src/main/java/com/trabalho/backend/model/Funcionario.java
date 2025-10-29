@@ -3,11 +3,15 @@ package com.trabalho.backend.model;
 import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 
 @Entity
 public class Funcionario extends Usuario {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idFuncionario;
     private String cargo;
     private Double salarioBase;
