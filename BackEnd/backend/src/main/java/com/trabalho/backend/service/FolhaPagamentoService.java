@@ -66,10 +66,11 @@ public class FolhaPagamentoService {
         this.folhaRepo = folhaRepo;
     }
 
-    //Gerar folha de pagamento para 1 funcionário
+    // Gerar folha de pagamento a partir do ID do funcionário
     @Transactional
-    public FolhaPagamento gerarFolhaPagamentoPorFuncionario(Funcionario f) {
-        funcionarioRepo.save(f); // garante que o funcionário esteja salvo no banco
+    public FolhaPagamento gerarFolhaPagamentoPorFuncionario(Long idFuncionario) {
+        Funcionario f = funcionarioRepo.findById(idFuncionario)
+            .orElseThrow(() -> new RuntimeException("Funcionário não encontrado com ID: " + idFuncionario));
 
         FolhaPagamento folha = new FolhaPagamento(f);
         folha.setSalarioBase(f.getSalarioBase());
@@ -87,33 +88,33 @@ public class FolhaPagamentoService {
         return folhaRepo.save(folha);
     }
 
-    // Gerar folhas de pagamento para todos os funcionários
+    // Gerar folhas de pagamento para TODOS os funcionários do banco
     @Transactional
-    public List<FolhaPagamento> gerarFolhaParaTodos(List<Funcionario> funcionarios) {
-        funcionarioRepo.saveAll(funcionarios);
+    public List<FolhaPagamento> gerarFolhaParaTodos() {
+        List<Funcionario> funcionarios = funcionarioRepo.findAll();
 
         List<FolhaPagamento> folhas = funcionarios.stream()
-            .map(this::gerarFolhaPagamentoPorFuncionario)
+            .map(f -> gerarFolhaPagamentoPorFuncionario(f.getIdFuncionario()))
             .collect(Collectors.toList());
 
         return folhaRepo.saveAll(folhas);
     }
 
-    // Listar todas as folhas
+    // Listar todas as folhas de pagamento
     public List<FolhaPagamento> getTodasFolhas() {
         return folhaRepo.findAll();
     }
 
-    // Buscar folha por funcionário
-    public Optional<FolhaPagamento> buscarPeloFuncionario(Funcionario f) {
-        return funcionarioRepo.findByCpf(f.getCpf())
+    // Buscar folha pelo ID do funcionário
+    public Optional<FolhaPagamento> buscarPeloFuncionarioId(Long idFuncionario) {
+        return funcionarioRepo.findById(idFuncionario)
                 .flatMap(folhaRepo::findByFuncionario);
     }
 
-    // Remover folha de um funcionário
+    // Remover folha pelo ID do funcionário
     @Transactional
-    public boolean removerFolhaFuncionario(Funcionario f) {
-        Optional<FolhaPagamento> folhaOpt = buscarPeloFuncionario(f);
+    public boolean removerFolhaFuncionario(Long idFuncionario) {
+        Optional<FolhaPagamento> folhaOpt = buscarPeloFuncionarioId(idFuncionario);
         if (folhaOpt.isPresent()) {
             folhaRepo.delete(folhaOpt.get());
             return true;
@@ -121,6 +122,8 @@ public class FolhaPagamentoService {
         return false;
     }
 }
+
+
 
 
 
