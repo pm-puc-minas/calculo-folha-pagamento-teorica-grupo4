@@ -35,12 +35,16 @@ public class FolhaPagamento { // essa classe vai ser como um recibo para cada fu
     private double VT;
     
     private LocalDate geracaoData;
+    
+    public FolhaPagamento(){
+    }
 
 
     public FolhaPagamento(Funcionario funcionario){
         this.funcionario= funcionario;
         this.geracaoData= LocalDate.now();
     }
+
 
     public long getIdFolhaPagamento() {return idFolhaPagamento;}
     public void setIdFolhaPagamento(long idFolhaPagamento) {this.idFolhaPagamento = idFolhaPagamento;}
