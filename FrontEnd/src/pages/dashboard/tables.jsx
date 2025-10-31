@@ -6,6 +6,7 @@ import {
   Typography,
   Avatar,
   Input,
+  Button,
 } from "@material-tailwind/react";
 import { authorsTableData } from "@/data";
 
@@ -21,24 +22,47 @@ export function Tables() {
       job[1].toLowerCase().includes(search.toLowerCase())
   );
 
+  // --- Funções de clique ---
+  const handleGerarFolha = (funcionario) => {
+    console.log(`Gerar folha para: ${funcionario.name}`);
+    // Aqui você chamaria seu endpoint do backend:
+    // fetch(`http://localhost:8080/folha-pagamento/gerar/${funcionario.id}`, { method: "POST" })
+  };
+
+  const handleGerarFolhaTodos = () => {
+    console.log("Gerar folha para todos os funcionários");
+    // Exemplo: fetch("http://localhost:8080/folha-pagamento/gerar-todos", { method: "POST" })
+  };
+
   return (
     <div className="mt-12 mb-8 flex flex-col gap-12">
       <Card>
         <CardHeader
           variant="gradient"
           color="gray"
-          className="mb-8 p-6 flex items-center justify-between"
+          className="mb-8 p-6 flex flex-wrap items-center justify-between gap-4"
         >
           <Typography variant="h6" color="white">
             Funcionários
           </Typography>
-          <div className="w-72">
-            <Input
-              label="Pesquisar funcionário..."
-              color="white"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
+
+          <div className="flex items-center gap-4">
+            <div className="w-72">
+              <Input
+                label="Pesquisar funcionário..."
+                color="white"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </div>
+            <Button
+              color="black"
+              size="sm"
+              onClick={handleGerarFolhaTodos}
+              className="whitespace-nowrap"
+            >
+              Gerar Folha para Todos
+            </Button>
           </div>
         </CardHeader>
 
@@ -46,7 +70,7 @@ export function Tables() {
           <table className="w-full min-w-[640px] table-auto">
             <thead>
               <tr>
-                {["Nome", "Cargo", "Data de Admissão"].map((el) => (
+                {["Nome", "Cargo", "Data de Admissão", "Ações"].map((el) => (
                   <th
                     key={el}
                     className="border-b border-blue-gray-50 py-3 px-5 text-left"
@@ -61,6 +85,7 @@ export function Tables() {
                 ))}
               </tr>
             </thead>
+
             <tbody>
               {filteredData.length > 0 ? (
                 filteredData.map(({ img, name, email, job, date }, key) => {
@@ -101,18 +126,29 @@ export function Tables() {
                         </Typography>
                       </td>
 
-                      {/* Data de admissão */}
+                      {/* Data */}
                       <td className={className}>
                         <Typography className="text-xs font-semibold text-blue-gray-600">
                           {date}
                         </Typography>
+                      </td>
+
+                      {/* Ações */}
+                      <td className={className}>
+                        <Button
+                          size="sm"
+                          color="black"
+                          onClick={() => handleGerarFolha({ name, email })}
+                        >
+                          Gerar Folha
+                        </Button>
                       </td>
                     </tr>
                   );
                 })
               ) : (
                 <tr>
-                  <td colSpan={3} className="py-4 text-center text-blue-gray-500">
+                  <td colSpan={4} className="py-4 text-center text-blue-gray-500">
                     Nenhum funcionário encontrado.
                   </td>
                 </tr>
@@ -126,6 +162,7 @@ export function Tables() {
 }
 
 export default Tables;
+
 
 
 

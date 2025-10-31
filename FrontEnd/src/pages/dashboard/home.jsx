@@ -14,7 +14,7 @@ export function Home() {
           value={totalFuncionarios}
           icon={<UserGroupIcon className="w-6 h-6 text-white" />}
           footer={
-            <Typography className="font-normal text-blue-gray-600">
+            <Typography className="font-normal text-black-600">
               Total de funcionários cadastrados no sistema
             </Typography>
           }
