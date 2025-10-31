@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.trabalho.backend.event.FolhaPagamentoEvent;
 
 import com.trabalho.backend.model.*;
 import com.trabalho.backend.repository.FuncionarioRepository;
@@ -37,6 +39,7 @@ public class FolhaPagamentoService {
 
     private final FuncionarioRepository funcionarioRepo;
     private final FolhaPagamentoRepository folhaRepo;
+    private final ApplicationEventPublisher aviso;
 
     public FolhaPagamentoService(
         CalcularInsalubridade insalubridade,
@@ -50,7 +53,8 @@ public class FolhaPagamentoService {
         CalcularValeAlime VA,
         CalcularValeTrans VT,
         FuncionarioRepository funcionarioRepo,
-        FolhaPagamentoRepository folhaRepo
+        FolhaPagamentoRepository folhaRepo,
+        ApplicationEventPublisher aviso
     ) {
         this.insalubridade = insalubridade;
         this.periculosidade = periculosidade;
@@ -64,6 +68,7 @@ public class FolhaPagamentoService {
         this.VT = VT;
         this.funcionarioRepo = funcionarioRepo;
         this.folhaRepo = folhaRepo;
+        this.aviso=aviso;
     }
 
     // Gerar folha de pagamento a partir do ID do funcionário
@@ -80,12 +85,15 @@ public class FolhaPagamentoService {
         folha.setValorHora(salarioHora.calcularAdicional(f));
         folha.setInss(inss.calcularDesconto(f));
         folha.setIrrf(irrf.calcularDesconto(f));
-        folha.setVA(VA.calcularDesconto(f));
+        folha.setVA(VA.calcularDesconto(f));    
         folha.setVT(VT.calcularDesconto(f));
         folha.setSalarioBruto(salarioBruto.calcularSalarioTotalBruto(f));
         folha.setSalarioLiquido(salarioLiquido.calcularLiquido(f));
 
-        return folhaRepo.save(folha);
+        FolhaPagamento folhagerada= folhaRepo.save(folha);
+        aviso.publishEvent(new FolhaPagamentoEvent(folhagerada));
+        
+        return folhagerada;
     }
 
     // Gerar folhas de pagamento para TODOS os funcionários do banco
