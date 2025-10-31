@@ -1,31 +1,34 @@
 package com.trabalho.backend.service.calculoDescontosService;
-import com.trabalho.backend.service.calculoAdicionaisService.*;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.trabalho.backend.model.CalculoDescontos;
 import com.trabalho.backend.model.Funcionario;
+import com.trabalho.backend.service.OutrosCalculosService.TotalSalarioBruto;
 
 @Service
 public class CalcularValeTrans implements CalculoDescontos {
 
+    private final TotalSalarioBruto totalSalarioBruto;
 
+    // aplivando o D do SOLID pra adiantar o trabalho da sprint 3 ou 4
+    public CalcularValeTrans(TotalSalarioBruto totalSalarioBruto) {
+        this.totalSalarioBruto = totalSalarioBruto;
+    }
 
     @Override
-    public double calcularDesconto(Funcionario f){
-        // se o funcionario não usa vale transporte, recebe 0
-        if(f.getReceberValeTransporte()== false){
+    public double calcularDesconto(Funcionario f) {
+
+        // Se o funcionário não usa vale transporte, recebe 0
+        if (!f.getReceberValeTransporte()) {
             return 0.0;
         }
 
-        // calcular o teto de 6% sobre o salario bruto
-        double teto= f.getSalarioBase() * 0.06;
+        // Calcular o teto de 6% sobre o salário bruto
+        double teto = totalSalarioBruto.calcularSalarioTotalBruto(f) * 0.06;
 
-        // guardar o custo real do funcionario em uma variavel
-        double custoTotalTransporte= f.getCustoValeTransporte();
+        // Guardar o custo real do funcionário em uma variável
+        double custoTotalTransporte = f.getCustoValeTransporte();
 
-        // comparar os dois valores e receber o menor valor
+        // se o teto for menor retorna esee, caso contrario retorna o custo do transporte
         return Math.min(teto, custoTotalTransporte);
-
     }
 }

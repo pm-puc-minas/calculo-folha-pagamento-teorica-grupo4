@@ -7,9 +7,10 @@ import com.trabalho.backend.model.Funcionario;
 @Service
 public class CalcularSalarioHora implements CalculoAdicionais {
 
-
-    // atributo global
-    private static final double semanaMes= 4.5;
+    private final TotalSalarioBruto salarioBruto;
+    public CalcularSalarioHora(TotalSalarioBruto salarioBruto){
+        this.salarioBruto=salarioBruto;
+    }
 
     @Override
     public double calcularAdicional(Funcionario f){
@@ -23,9 +24,9 @@ public class CalcularSalarioHora implements CalculoAdicionais {
             throw new IllegalArgumentException("Carga Horária semanal excedida pelo CLT");
         }
 
-        double jornadaMensal= jornadaSemanal * semanaMes;
+        double jornadaMensal= jornadaSemanal * 4.5;
 
-        return f.getSalarioBase() / jornadaMensal;
+        return salarioBruto.calcularSalarioTotalBruto(f) / jornadaMensal;
     } 
 
 }
