@@ -1,31 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   CardHeader,
   CardBody,
   Typography,
-  Avatar,
   Input,
   Button,
+  Avatar,
 } from "@material-tailwind/react";
-import { authorsTableData } from "@/data";
 
 export function Tables() {
+  const [funcionarios, setFuncionarios] = useState([]);
   const [search, setSearch] = useState("");
 
-  // Filtro por nome, email ou cargo
-  const filteredData = authorsTableData.filter(
-    ({ name, email, job }) =>
-      name.toLowerCase().includes(search.toLowerCase()) ||
-      email.toLowerCase().includes(search.toLowerCase()) ||
-      job[0].toLowerCase().includes(search.toLowerCase()) ||
-      job[1].toLowerCase().includes(search.toLowerCase())
+
+  useEffect(() => {
+    fetch("http://localhost:8080/funcionarios/mostrarCampos")
+      .then((res) => res.json())
+      .then((data) => setFuncionarios(data))
+      .catch((err) => console.error("Erro ao buscar funcionários:", err));
+  }, []);
+
+  // Filtro por nome ou cargo
+  const filteredData = funcionarios.filter(
+    (f) =>
+      f.nome?.toLowerCase().includes(search.toLowerCase()) ||
+      f.cargo?.toLowerCase().includes(search.toLowerCase())
   );
 
-  // --- Funções de clique ---
   const handleGerarFolha = (funcionario) => {
-    console.log(`Gerar folha para: ${funcionario.name}`);
-    // Aqui você chamaria seu endpoint do backend:
+    console.log(`Gerar folha para: ${funcionario.nome}`);
     // fetch(`http://localhost:8080/folha-pagamento/gerar/${funcionario.id}`, { method: "POST" })
   };
 
@@ -39,7 +43,7 @@ export function Tables() {
       <Card>
         <CardHeader
           variant="gradient"
-          color="gray"
+          color="gray" 
           className="mb-8 p-6 flex flex-wrap items-center justify-between gap-4"
         >
           <Typography variant="h6" color="white">
@@ -56,7 +60,7 @@ export function Tables() {
               />
             </div>
             <Button
-              color="black"
+              color="blue" 
               size="sm"
               onClick={handleGerarFolhaTodos}
               className="whitespace-nowrap"
@@ -88,7 +92,7 @@ export function Tables() {
 
             <tbody>
               {filteredData.length > 0 ? (
-                filteredData.map(({ img, name, email, job, date }, key) => {
+                filteredData.map((f, key) => {
                   const className = `py-3 px-5 ${
                     key === filteredData.length - 1
                       ? ""
@@ -96,21 +100,26 @@ export function Tables() {
                   }`;
 
                   return (
-                    <tr key={name}>
+                    <tr key={f.id}>
                       {/* Nome */}
                       <td className={className}>
                         <div className="flex items-center gap-4">
-                          <Avatar src={img} alt={name} size="sm" variant="rounded" />
+                          <Avatar
+                            src={f.img || "https://via.placeholder.com/40"}
+                            alt={f.nome}
+                            size="sm"
+                            variant="rounded"
+                          />
                           <div>
                             <Typography
                               variant="small"
                               color="blue-gray"
                               className="font-semibold"
                             >
-                              {name}
+                              {f.nome}
                             </Typography>
                             <Typography className="text-xs font-normal text-blue-gray-500">
-                              {email}
+                              {f.email || "—"}
                             </Typography>
                           </div>
                         </div>
@@ -119,17 +128,14 @@ export function Tables() {
                       {/* Cargo */}
                       <td className={className}>
                         <Typography className="text-xs font-semibold text-blue-gray-600">
-                          {job[0]}
-                        </Typography>
-                        <Typography className="text-xs font-normal text-blue-gray-500">
-                          {job[1]}
+                          {f.cargo || "—"}
                         </Typography>
                       </td>
 
-                      {/* Data */}
+                      {/* Data de Admissão */}
                       <td className={className}>
                         <Typography className="text-xs font-semibold text-blue-gray-600">
-                          {date}
+                          {f.dataAdmissao || "—"}
                         </Typography>
                       </td>
 
@@ -137,8 +143,8 @@ export function Tables() {
                       <td className={className}>
                         <Button
                           size="sm"
-                          color="black"
-                          onClick={() => handleGerarFolha({ name, email })}
+                          color="blue"
+                          onClick={() => handleGerarFolha(f)}
                         >
                           Gerar Folha
                         </Button>
@@ -162,6 +168,7 @@ export function Tables() {
 }
 
 export default Tables;
+
 
 
 

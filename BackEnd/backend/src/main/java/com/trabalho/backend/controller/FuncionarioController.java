@@ -1,6 +1,7 @@
 package com.trabalho.backend.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.trabalho.backend.dto.FuncionarioDTO;
 import com.trabalho.backend.event.CadastroFuncionarioEvent;
 import com.trabalho.backend.model.Funcionario;
 import com.trabalho.backend.repository.FuncionarioRepository;
@@ -41,6 +43,16 @@ public class FuncionarioController {
     @GetMapping
     public List<Funcionario> listarFuncionarios(){
         return funcionario.findAll();
+    }
+
+    //Endpoint para mostrar somente nome e dataAdmissao no front end
+
+    @GetMapping("/mostrarCampos")
+    public List<FuncionarioDTO> listarCamposEspecifico(){
+        return funcionario.findAll()
+            .stream()
+            .map(f-> new FuncionarioDTO(f.getIdFuncionario(), f.getNome(), f.getCargo(), f.getDataAdmissao()))
+            .collect(Collectors.toList());
     }
 
 
