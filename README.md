@@ -22,11 +22,11 @@ A aplicação deve ser desenvolvida em **Java com Spring Boot**, expondo um back
 ## 🚀 Tecnologias Utilizadas
 - **Java 17**  
 - **Spring Boot** (Web, Data JPA, Security)  
-- **Banco de Dados**: a Definir(PostreSQL ou MySQL)
+- **Banco de Dados**: PostreSQL
 - **JUnit** (para testes unitários)  
 - **Maven** (gerenciador de dependências)
 - **Trello**(Quadro Kanban)
-- **React com TSX**(FrontEnd)
+- **React com JSX**(FrontEnd)
 
 ---
 
@@ -41,7 +41,7 @@ A aplicação deve ser desenvolvida em **Java com Spring Boot**, expondo um back
 - Esqueleto inicial do sistema em **Spring Boot**  
 - Planejamento dos **testes unitários** (descrição dos casos, sem implementação)  
 
-### 🔜 Sprint 2 – Herança, Interfaces e Testes Unitários
+### ✅ Sprint 2 – Herança, Interfaces e Testes Unitários
 - Implementação dos testes unitários da Sprint 1  
 - Uso de **Herança, Interfaces e Classes Abstratas**  
 - Relatório explicativo + apresentação  

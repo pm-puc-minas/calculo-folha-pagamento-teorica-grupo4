@@ -1,20 +1,26 @@
 package com.trabalho.backend.model;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 
 @Entity
 public class Administrador extends Usuario {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long idAdministrador;
     private String email;
     private String senha;
     
 
+    public Long getId() {
+        return idAdministrador;
+    }
+
+    public Long getIdAdministrador() {
+        return idAdministrador;
+    }
+
+    public void setIdAdministrador(Long idAdministrador) {
+        this.idAdministrador = idAdministrador;
+    }
 
     public String getSenha() {
         return senha;
@@ -31,16 +37,6 @@ public class Administrador extends Usuario {
     public void setEmail(String email) {
         this.email = email;
     }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    
     
     
     
