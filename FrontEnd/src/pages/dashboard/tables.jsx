@@ -7,12 +7,21 @@ import {
   Input,
   Button,
   Avatar,
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
 } from "@material-tailwind/react";
 
 export function Tables() {
   const [funcionarios, setFuncionarios] = useState([]);
   const [search, setSearch] = useState("");
 
+  // Estado do modal
+  const [openModal, setOpenModal] = useState(false);
+  const [folhaGerada, setFolhaGerada] = useState(null);
+
+  const handleOpenModal = () => setOpenModal(!openModal);
 
   useEffect(() => {
     fetch("http://localhost:8080/funcionarios/mostrarCampos")
@@ -28,14 +37,27 @@ export function Tables() {
       f.cargo?.toLowerCase().includes(search.toLowerCase())
   );
 
+  // Geração da folha com modal
   const handleGerarFolha = (funcionario) => {
-    console.log(`Gerar folha para: ${funcionario.nome}`);
-    // fetch(`http://localhost:8080/folha-pagamento/gerar/${funcionario.id}`, { method: "POST" })
+    const dataAtual = new Date().toLocaleDateString("pt-BR");
+    const salarioLiquidoFicticio = (
+      Math.random() * (8000 - 3000) +
+      3000
+    ).toFixed(2);
+
+    setFolhaGerada({
+      nome: funcionario.nome,
+      data: dataAtual,
+      salarioLiquido: salarioLiquidoFicticio,
+    });
+
+    setOpenModal(true);
+
+    console.log(`Folha gerada para: ${funcionario.nome}`);
   };
 
   const handleGerarFolhaTodos = () => {
     console.log("Gerar folha para todos os funcionários");
-    // Exemplo: fetch("http://localhost:8080/folha-pagamento/gerar-todos", { method: "POST" })
   };
 
   return (
@@ -43,7 +65,7 @@ export function Tables() {
       <Card>
         <CardHeader
           variant="gradient"
-          color="gray" 
+          color="gray"
           className="mb-8 p-6 flex flex-wrap items-center justify-between gap-4"
         >
           <Typography variant="h6" color="white">
@@ -60,7 +82,7 @@ export function Tables() {
               />
             </div>
             <Button
-              color="blue" 
+              color="blue"
               size="sm"
               onClick={handleGerarFolhaTodos}
               className="whitespace-nowrap"
@@ -163,11 +185,39 @@ export function Tables() {
           </table>
         </CardBody>
       </Card>
+
+      {/* ✅ MODAL DE SUCESSO */}
+      <Dialog open={openModal} handler={handleOpenModal}>
+        <DialogHeader>✅ Folha gerada com sucesso!</DialogHeader>
+        <DialogBody divider>
+          {folhaGerada ? (
+            <>
+              <Typography variant="h6" color="blue-gray">
+                Funcionário: {folhaGerada.nome}
+              </Typography>
+              <Typography variant="small" color="blue-gray">
+                Data da geração: {folhaGerada.data}
+              </Typography>
+              <Typography variant="small" color="blue-gray">
+                Salário líquido: R$ {folhaGerada.salarioLiquido}
+              </Typography>
+            </>
+          ) : (
+            <Typography>Carregando...</Typography>
+          )}
+        </DialogBody>
+        <DialogFooter>
+          <Button color="blue" onClick={handleOpenModal}>
+            Fechar
+          </Button>
+        </DialogFooter>
+      </Dialog>
     </div>
   );
 }
 
 export default Tables;
+
 
 
 

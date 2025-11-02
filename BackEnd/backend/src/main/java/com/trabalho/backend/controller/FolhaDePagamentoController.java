@@ -2,22 +2,27 @@ package com.trabalho.backend.controller;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.trabalho.backend.dto.FolhaPagamentoDTO;
 import com.trabalho.backend.model.FolhaPagamento;
+import com.trabalho.backend.repository.FolhaPagamentoRepository;
 import com.trabalho.backend.service.FolhaPagamentoService;
 
 @RestController
 @RequestMapping("/folha-pagamento")
 @CrossOrigin(origins = "*")
 public class FolhaDePagamentoController {
-
+    
     private final FolhaPagamentoService folhaService;
+    private final FolhaPagamentoRepository folhaRepo;
 
-    public FolhaDePagamentoController(FolhaPagamentoService folhaService) {
+    public FolhaDePagamentoController(FolhaPagamentoService folhaService, FolhaPagamentoRepository folhaRepo) {
         this.folhaService = folhaService;
+        this.folhaRepo=folhaRepo;
     }
 
     //Gerar folha para 1 funcionário
@@ -66,6 +71,16 @@ public class FolhaDePagamentoController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    //método para mostrar os campos especificos ao gerar a folha de pagamento do funcionario no front
+    @GetMapping
+    public List<FolhaPagamentoDTO> listarCampos(){
+        return folhaRepo.findAll()
+            .stream()
+            .map(f-> new FolhaPagamentoDTO(f.getFuncionario().getNome(), f.getGeracaoData(), f.getSalarioLiquido()))
+            .collect(Collectors.toList());
+    }
+
 }
 
 
