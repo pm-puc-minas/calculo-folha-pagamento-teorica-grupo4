@@ -11,6 +11,7 @@ public class CalcularValeAlime implements CalculoDescontos{
     @Override
     public double calcularDesconto(Funcionario f){
 
+        //Ponto para inserir tratamento de exceções na sprint 3
         // veriica se o funcionario recebe o vale alimentação
         if(f.getReceberValeAlimentacao()== false){
             return 0.0;

@@ -1,15 +1,14 @@
 package com.trabalho.backend.model;
 
 
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Entity;
 
-
-
-@MappedSuperclass  // não vira tabela própria 
+@Entity
 public abstract class Usuario {
 
     private String nome;
     private String cpf;
+
 
     // construtor(opcional)
 
