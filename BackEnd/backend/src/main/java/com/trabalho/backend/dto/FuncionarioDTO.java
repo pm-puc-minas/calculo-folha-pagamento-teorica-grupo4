@@ -8,6 +8,8 @@ public class FuncionarioDTO {
     private String nome;
     private String cargo;
     private LocalDate dataAdmissao;
+
+    public FuncionarioDTO(){}
     
 
     public FuncionarioDTO(Long idFuncionario, String nome,String cargo, LocalDate dataAdmissao) {
