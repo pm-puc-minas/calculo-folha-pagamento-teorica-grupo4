@@ -1,4 +1,4 @@
-package com.trabalho.backend.SerialEDesserial;
+package com.trabalho.backend.controller.SerialEDesserial;
 import java.time.LocalDate;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.trabalho.backend.dto.FuncionarioDTO;
-import com.trabalho.backend.model.Funcionario;
+
 
 
 @RestController
@@ -33,8 +33,5 @@ public class SeriaEDesseriaFuncionario { // essa clase será para desseralizar e
     public String criarFuncionario(@RequestBody FuncionarioDTO f){
         return "Funcionario: "+ f.getNome() + "do cargo: "+f.getCargo();
     }
-
-
-        
 
 }
