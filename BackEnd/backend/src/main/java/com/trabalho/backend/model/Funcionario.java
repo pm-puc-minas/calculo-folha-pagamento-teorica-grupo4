@@ -2,6 +2,8 @@ package com.trabalho.backend.model;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,7 +21,11 @@ public class Funcionario extends Usuario {
     private int horasTrabalhadas;
     private int diasTrabalhadasSemana;
     private int diasTrabalhadasMes;
+
+    @JsonFormat(pattern = "yyyy-MM-DD") // isso vai ajudar na serialização e desserialzação
     private LocalDate dataAdmissao;
+
+
     private Boolean receberValeTransporte=false;
     private Boolean receberValeAlimentacao=false;
     private Double custoValeTransporte;
