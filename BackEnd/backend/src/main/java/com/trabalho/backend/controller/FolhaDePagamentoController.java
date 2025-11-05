@@ -81,6 +81,12 @@ public class FolhaDePagamentoController {
             .collect(Collectors.toList());
     }
 
+    @GetMapping("/media")
+    public ResponseEntity<Double> mediaSalarioLiquidos(){
+        Double media= folhaService.calcularMediaSalarioGeral();
+        return ResponseEntity.ok(media);
+    }
+
 }
 
 

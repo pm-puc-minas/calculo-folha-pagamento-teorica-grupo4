@@ -129,7 +129,16 @@ public class FolhaPagamentoService {
         }
         return false;
     }
-}
+    // método para calcular a média de salário dos funcionários
+    public Double calcularMediaSalarioGeral(){
+        List<FolhaPagamento> folhas= folhaRepo.findAll();
+
+        return folhas.stream()
+            .mapToDouble(FolhaPagamento::getSalarioLiquido)
+            .average()
+            .orElse(0.0);
+    }
+}   
 
 
 
