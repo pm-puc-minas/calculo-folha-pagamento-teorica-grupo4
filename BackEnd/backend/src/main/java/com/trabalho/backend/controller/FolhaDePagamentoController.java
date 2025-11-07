@@ -22,18 +22,14 @@ public class FolhaDePagamentoController {
 
     public FolhaDePagamentoController(FolhaPagamentoService folhaService, FolhaPagamentoRepository folhaRepo) {
         this.folhaService = folhaService;
-        this.folhaRepo=folhaRepo;
+        this.folhaRepo = folhaRepo;
     }
 
-    //Gerar folha para 1 funcionário
+    // Gerar folha para 1 funcionário
     @PostMapping("/gerar/{idFuncionario}")
     public ResponseEntity<FolhaPagamento> gerarFolha(@PathVariable Long idFuncionario) {
-        try {
-            FolhaPagamento folha = folhaService.gerarFolhaPagamentoPorFuncionario(idFuncionario);
-            return ResponseEntity.ok(folha);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(null);
-        }
+        FolhaPagamento folha = folhaService.gerarFolhaPagamentoPorFuncionario(idFuncionario);
+        return ResponseEntity.ok(folha);
     }
 
     // Gerar folhas para todos os funcionários
@@ -53,7 +49,7 @@ public class FolhaDePagamentoController {
         return ResponseEntity.ok(folhas);
     }
 
-    // Buscar a folha de pagamento de um funcionário pelo ID
+    // Buscar folha pelo ID do funcionário
     @GetMapping("/funcionario/{idFuncionario}")
     public ResponseEntity<FolhaPagamento> buscarFuncionario(@PathVariable Long idFuncionario) {
         Optional<FolhaPagamento> folha = folhaService.buscarPeloFuncionarioId(idFuncionario);
@@ -61,7 +57,7 @@ public class FolhaDePagamentoController {
                     .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // Remover a folha de um funcionário pelo ID
+    // Remover folha pelo ID do funcionário
     @DeleteMapping("/funcionario/{idFuncionario}")
     public ResponseEntity<String> removerFolha(@PathVariable Long idFuncionario) {
         boolean removido = folhaService.removerFolhaFuncionario(idFuncionario);
@@ -72,21 +68,26 @@ public class FolhaDePagamentoController {
         }
     }
 
-    //método para mostrar os campos especificos ao gerar a folha de pagamento do funcionario no front
-    @GetMapping
-    public List<FolhaPagamentoDTO> listarCampos(){
+    // Exibir dados resumidos para o front
+    @GetMapping("/mostrar_campo")
+    public List<FolhaPagamentoDTO> listarCampos() {
         return folhaRepo.findAll()
             .stream()
-            .map(f-> new FolhaPagamentoDTO(f.getFuncionario().getNome(), f.getGeracaoData(), f.getSalarioLiquido()))
+            .map(f -> new FolhaPagamentoDTO(
+                    f.getFuncionario().getNome(),
+                    f.getGeracaoData(),
+                    f.getSalarioLiquido()
+            ))
             .collect(Collectors.toList());
     }
 
     @GetMapping("/media")
-    public ResponseEntity<Double> mediaSalarioLiquidos(){
-        Double media= folhaService.calcularMediaSalarioGeral();
+    public ResponseEntity<Double> mediaSalarioLiquidos() {
+        Double media = folhaService.calcularMediaSalarioGeral();
         return ResponseEntity.ok(media);
     }
 
 }
+
 
 

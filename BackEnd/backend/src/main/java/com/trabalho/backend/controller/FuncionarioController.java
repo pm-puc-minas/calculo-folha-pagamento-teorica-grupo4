@@ -5,22 +5,19 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import com.trabalho.backend.dto.FuncionarioDTO;
 import com.trabalho.backend.event.CadastroFuncionarioEvent;
+import com.trabalho.backend.exception.DadosInvalidosException;
+import com.trabalho.backend.exception.ValoresBordasException;
 import com.trabalho.backend.model.Funcionario;
 import com.trabalho.backend.repository.FuncionarioRepository;
 
 @RestController
 @RequestMapping("/funcionarios")
-@CrossOrigin(origins = "*") // permite conectar com front
-
+@CrossOrigin(origins = "*")
 public class FuncionarioController {
 
     @Autowired
@@ -28,33 +25,46 @@ public class FuncionarioController {
     @Autowired
     private ApplicationEventPublisher aviso;
 
-
     // cadastrar um funcionário
     @PostMapping
-    public Funcionario cadastrarFuncionario(@RequestBody Funcionario f){
-        Funcionario salvo= funcionario.save(f);
-        //Após o cadastro dispara o evento
+    public ResponseEntity<Funcionario> cadastrarFuncionario(@RequestBody Funcionario f){
+
+        Funcionario salvo = funcionario.save(f);
+
+        // dispara evento após cadastro
         aviso.publishEvent(new CadastroFuncionarioEvent(salvo));
 
-        return salvo;
+        return ResponseEntity.status(201).body(salvo);
     }
 
-    //listar os funcionários
+    // listar todos os funcionários
     @GetMapping
-    public List<Funcionario> listarFuncionarios(){
-        return funcionario.findAll();
+    public ResponseEntity<List<Funcionario>> listarFuncionarios(){
+        List<Funcionario> lista = funcionario.findAll();
+        if (lista.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(lista);
     }
 
-    //Endpoint para mostrar somente nome e dataAdmissao no front end
-
+    // listar campos específicos (para exibição no front)
     @GetMapping("/mostrarCampos")
-    public List<FuncionarioDTO> listarCamposEspecifico(){
-        return funcionario.findAll()
+    public ResponseEntity<List<FuncionarioDTO>> listarCamposEspecifico(){
+        List<FuncionarioDTO> lista = funcionario.findAll()
             .stream()
-            .map(f-> new FuncionarioDTO(f.getIdFuncionario(), f.getNome(), f.getCargo(), f.getDataAdmissao()))
+            .map(f -> new FuncionarioDTO(
+                    f.getIdFuncionario(),
+                    f.getNome(),
+                    f.getCargo(),
+                    f.getDataAdmissao()
+            ))
             .collect(Collectors.toList());
+
+        if (lista.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        
+        return ResponseEntity.ok(lista);
     }
-
-
-    
 }
+

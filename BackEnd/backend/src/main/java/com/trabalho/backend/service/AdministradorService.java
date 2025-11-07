@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import com.trabalho.backend.model.Administrador;
 import com.trabalho.backend.repository.AdministradorRepository;
+import com.trabalho.backend.exception.DadosInvalidosException;
 
 @Service
 public class AdministradorService {
@@ -19,11 +20,20 @@ public class AdministradorService {
         this.admRepor = admRepor;
     }
 
-    // método para registrar o adm do sistema RH
+    // Registrar novo administrador
     public Administrador criarAdm(String nome, String cpf, String email, String senha) {
 
+        // validações simples
+        if (nome == null || nome.isBlank() ||
+            cpf == null || cpf.isBlank() ||
+            email == null || email.isBlank() ||
+            senha == null || senha.isBlank()) {
+
+            throw new DadosInvalidosException("Dados inválidos: nome, cpf, email ou senha não podem estar vazios");
+        }
+
         if (admRepor.existsByEmail(email)) {
-            throw new IllegalArgumentException("Já existe um Administrador com esse email");
+            throw new DadosInvalidosException("Já existe um Administrador cadastrado com este email");
         }
 
         Administrador novoAdm = new Administrador();
@@ -35,7 +45,7 @@ public class AdministradorService {
         return admRepor.save(novoAdm);
     }
 
-    // validação do Login
+    // Login
     public boolean autenticar(String email, String senha) {
         Optional<Administrador> opt = admRepor.findByEmail(email);
 
@@ -45,13 +55,13 @@ public class AdministradorService {
 
         Administrador admin = opt.get();
 
-        // comparar senha digitada com senha criptografada
         return senhaCriptografada.matches(senha, admin.getSenha());
     }
 
+    // Listar todos
     public List<Administrador> listarTodos() {
         return admRepor.findAll();
     }
-
 }
+
 
