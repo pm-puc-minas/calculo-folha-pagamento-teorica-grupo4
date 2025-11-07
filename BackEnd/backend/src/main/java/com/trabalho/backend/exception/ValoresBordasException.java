@@ -20,7 +20,7 @@ public class ValoresBordasException extends RuntimeException {
 		super(message, cause);
 	}
 
-	public ValoresBordasException(Throwable cause) {
+	public ValoresBordasException(Throwable cause) { 
 		super(cause);
 	}
 
