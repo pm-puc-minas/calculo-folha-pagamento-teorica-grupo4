@@ -9,6 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.trabalho.backend.event.FolhaPagamentoEvent;
 
+import com.trabalho.backend.exception.DadosInvalidosException;
+import com.trabalho.backend.exception.FuncionarioNaoEncontrado;
+import com.trabalho.backend.exception.ValoresBordasException;
+
 import com.trabalho.backend.model.*;
 import com.trabalho.backend.repository.FuncionarioRepository;
 import com.trabalho.backend.repository.FolhaPagamentoRepository;
@@ -68,14 +72,25 @@ public class FolhaPagamentoService {
         this.VT = VT;
         this.funcionarioRepo = funcionarioRepo;
         this.folhaRepo = folhaRepo;
-        this.aviso=aviso;
+        this.aviso = aviso;
     }
 
-    // Gerar folha de pagamento a partir do ID do funcionário
     @Transactional
     public FolhaPagamento gerarFolhaPagamentoPorFuncionario(Long idFuncionario) {
+        
         Funcionario f = funcionarioRepo.findById(idFuncionario)
-            .orElseThrow(() -> new RuntimeException("Funcionário não encontrado com ID: " + idFuncionario));
+            .orElseThrow(() -> new FuncionarioNaoEncontrado(
+                "Funcionário não encontrado com o ID: " + idFuncionario));
+
+        // Valida salário base
+        if (f.getSalarioBase() <= 0) {
+            throw new ValoresBordasException("Salário base deve ser maior que zero.");
+        }
+
+        // CLT não permite insalubridade + periculosidade
+        if (f.getInsalu() == OpcaoAdicional.SIM && f.getPericulo() == OpcaoAdicional.SIM) {
+            throw new DadosInvalidosException("Periculosidade e Insalubridade não podem ser aplicadas juntas.");
+        }
 
         FolhaPagamento folha = new FolhaPagamento(f);
         folha.setSalarioBase(f.getSalarioBase());
@@ -90,36 +105,30 @@ public class FolhaPagamentoService {
         folha.setSalarioBruto(salarioBruto.calcularSalarioTotalBruto(f));
         folha.setSalarioLiquido(salarioLiquido.calcularLiquido(f));
 
-        FolhaPagamento folhagerada= folhaRepo.save(folha);
+        FolhaPagamento folhagerada = folhaRepo.save(folha);
         aviso.publishEvent(new FolhaPagamentoEvent(folhagerada));
         
         return folhagerada;
     }
 
-    // Gerar folhas de pagamento para TODOS os funcionários do banco
     @Transactional
     public List<FolhaPagamento> gerarFolhaParaTodos() {
         List<Funcionario> funcionarios = funcionarioRepo.findAll();
 
-        List<FolhaPagamento> folhas = funcionarios.stream()
+        return funcionarios.stream()
             .map(f -> gerarFolhaPagamentoPorFuncionario(f.getIdFuncionario()))
             .collect(Collectors.toList());
-
-        return folhaRepo.saveAll(folhas);
     }
 
-    // Listar todas as folhas de pagamento
     public List<FolhaPagamento> getTodasFolhas() {
         return folhaRepo.findAll();
     }
 
-    // Buscar folha pelo ID do funcionário
     public Optional<FolhaPagamento> buscarPeloFuncionarioId(Long idFuncionario) {
         return funcionarioRepo.findById(idFuncionario)
                 .flatMap(folhaRepo::findByFuncionario);
     }
 
-    // Remover folha pelo ID do funcionário
     @Transactional
     public boolean removerFolhaFuncionario(Long idFuncionario) {
         Optional<FolhaPagamento> folhaOpt = buscarPeloFuncionarioId(idFuncionario);
@@ -129,16 +138,16 @@ public class FolhaPagamentoService {
         }
         return false;
     }
-    // método para calcular a média de salário dos funcionários
-    public Double calcularMediaSalarioGeral(){
-        List<FolhaPagamento> folhas= folhaRepo.findAll();
 
+    public Double calcularMediaSalarioGeral() {
+        List<FolhaPagamento> folhas = folhaRepo.findAll();
         return folhas.stream()
             .mapToDouble(FolhaPagamento::getSalarioLiquido)
             .average()
             .orElse(0.0);
     }
-}   
+}
+  
 
 
 

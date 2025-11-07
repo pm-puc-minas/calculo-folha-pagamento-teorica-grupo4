@@ -22,7 +22,7 @@ public class Funcionario extends Usuario {
     private int diasTrabalhadasSemana;
     private int diasTrabalhadasMes;
 
-    @JsonFormat(pattern = "yyyy-MM-DD") // isso vai ajudar na serialização e desserialzação
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dataAdmissao;
 
 
