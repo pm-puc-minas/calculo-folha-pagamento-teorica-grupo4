@@ -245,7 +245,7 @@ Retorna todas as folhas de pagamento geradas.
 
    * Java (versão compatível com o projeto) instalado na máquina.
    * Banco de dados (opcional: PostgreSQL, MySQL, H2, etc.).
-   * Cliente para testar endpoints: Postman, Insomnia ou extensão REST no VSCode.
+   * Apps para testar endpoints: Postman, Insomnia ou extensão REST no VSCode.
 
 2. **Configurar `application.properties`**
 
@@ -271,14 +271,5 @@ Retorna todas as folhas de pagamento geradas.
 
 ---
 
-## Contato
 
-Para dúvidas ou contribuições, entre em contato com o time responsável pelo projeto.
-
----
-
-*README gerado e formatado automaticamente pelo assistente.*
-
-```
-```
 
