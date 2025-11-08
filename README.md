@@ -41,16 +41,16 @@ A aplicação deve ser desenvolvida em **Java com Spring Boot**, expondo um back
 - Esqueleto inicial do sistema em **Spring Boot**  
 - Planejamento dos **testes unitários** (descrição dos casos, sem implementação)  
 
-### 🔜 Sprint 2 – Herança, Interfaces e Testes Unitários
+### ✅ Sprint 2 – Herança, Interfaces e Testes Unitários
 - Implementação dos testes unitários da Sprint 1  
 - Uso de **Herança, Interfaces e Classes Abstratas**  
 - Relatório explicativo + apresentação  
 
-### 🔜 Sprint 3 – Polimorfismo, Streams, Persistência e Eventos
-- Uso de **Generics e Coleções**  
+### ✅ Sprint 3 – Polimorfismo, Streams, Persistência e Eventos
+- Uso de **Streams e Coleções**  
 - Persistência em **Banco de Dados Relacional**  
 - Implementação de **Eventos**  
-- Testes unitários para as novas funcionalidades  
+- Serialização e Desserialização
 
 ### 🔜 Sprint 4 – Frontend, Integração e Padrões de Projeto
 - Desenvolvimento do **Frontend Web**  
