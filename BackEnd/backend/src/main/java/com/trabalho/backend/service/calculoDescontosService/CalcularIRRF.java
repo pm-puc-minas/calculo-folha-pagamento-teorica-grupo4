@@ -2,12 +2,12 @@ package com.trabalho.backend.service.calculoDescontosService;
 
 import org.springframework.stereotype.Service;
 
-import com.trabalho.backend.model.CalculoDescontos;
+import com.trabalho.backend.model.ICalculoDescontos;
 import com.trabalho.backend.model.Funcionario;
 import com.trabalho.backend.service.OutrosCalculosService.TotalSalarioBruto;
 
 @Service
-public class CalcularIRRF implements CalculoDescontos {
+public class CalcularIRRF implements ICalculoDescontos {
 
     private final TotalSalarioBruto totalSalarioBruto;
     private final CalcularINSS calcularINSS;
@@ -49,8 +49,9 @@ public class CalcularIRRF implements CalculoDescontos {
 
         // Cálculo do IRRF
         double irrf = (salarioInicial * aliquota) - deducao;
+        irrf= Math.max(irrf, 0);
 
-        return (irrf * 100.0) / 100.0;
+        return Math.round(irrf * 100.0) / 100.0;
     }
 }
 

@@ -25,7 +25,7 @@ public class ApiExceptionHandler {
     
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleGeral(Exception ex) {
-        ex.printStackTrace(); // <-- agora vai aparecer no console
+        ex.printStackTrace(); 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body("Erro interno no servidor: " + ex.getMessage());
     }

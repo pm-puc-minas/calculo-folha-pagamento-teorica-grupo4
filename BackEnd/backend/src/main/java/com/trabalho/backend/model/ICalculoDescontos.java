@@ -1,6 +1,6 @@
 package com.trabalho.backend.model;
 
-public interface CalculoDescontos {
+public interface ICalculoDescontos {
 
     double calcularDesconto(Funcionario f);
 

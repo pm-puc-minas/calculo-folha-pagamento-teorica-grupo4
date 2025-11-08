@@ -5,9 +5,9 @@ import org.springframework.stereotype.Service;
 import com.trabalho.backend.exception.DadosInvalidosException;
 import com.trabalho.backend.exception.ValoresBordasException;
 import com.trabalho.backend.model.Funcionario;
+import com.trabalho.backend.model.OpcaoAdicional;
 import com.trabalho.backend.service.calculoAdicionaisService.CalcularInsalubridade;
 import com.trabalho.backend.service.calculoAdicionaisService.CalcularPericulosidade;
-import com.trabalho.backend.model.OpcaoAdicional;
 
 @Service
 public class TotalSalarioBruto {
@@ -18,6 +18,7 @@ public class TotalSalarioBruto {
             throw new ValoresBordasException("Salário base deve ser maior que zero.");
         }
 
+        // Não permitir os dois ao mesmo tempo
         if (f.getPericulo() == OpcaoAdicional.SIM && f.getInsalu() == OpcaoAdicional.SIM) {
             throw new DadosInvalidosException("Não é permitido aplicar periculosidade e insalubridade ao mesmo tempo.");
         }
@@ -25,18 +26,20 @@ public class TotalSalarioBruto {
         CalcularInsalubridade insalubridade = new CalcularInsalubridade();
         CalcularPericulosidade periculosidade = new CalcularPericulosidade();
 
-        // Se tiver apenas periculosidade
-        if (f.getPericulo() == OpcaoAdicional.SIM && f.getInsalu() == OpcaoAdicional.NAO) {
-            return f.getSalarioBase() + periculosidade.calcularAdicional(f);
+        double adicional = 0;
+
+        if (f.getPericulo() == OpcaoAdicional.SIM) {
+            adicional = periculosidade.calcularAdicional(f);
+        } else if (f.getInsalu() == OpcaoAdicional.SIM) {
+            adicional = insalubridade.calcularAdicional(f);
         }
 
-        // Se tiver apenas insalubridade
-        if (f.getPericulo() == OpcaoAdicional.NAO && f.getInsalu() == OpcaoAdicional.SIM) {
-            return f.getSalarioBase() + insalubridade.calcularAdicional(f);
-        }
+        double total = f.getSalarioBase() + adicional;
 
-        // Sem adicionais
-        return f.getSalarioBase();
+        //aarredondamento para 2 casas decimais
+        return Math.round(total * 100.0) / 100.0;
     }
 }
+
+
 
