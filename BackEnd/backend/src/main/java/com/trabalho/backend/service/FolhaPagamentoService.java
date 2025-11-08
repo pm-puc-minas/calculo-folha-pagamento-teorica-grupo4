@@ -146,6 +146,26 @@ public class FolhaPagamentoService {
             .average()
             .orElse(0.0);
     }
+    
+    public Double somarTodosValeAlimentacao(){
+        return folhaRepo.findAll().stream()
+            .mapToDouble(FolhaPagamento::getVA)
+            .sum();
+    }
+
+    public Double somarTodosValeTransporte(){
+        return folhaRepo.findAll().stream()
+            .mapToDouble(FolhaPagamento::getVT)
+            .sum();
+    }
+
+    public Double somarTodosINSS(){
+        return folhaRepo.findAll().stream()
+            .mapToDouble(FolhaPagamento::getInss)
+            .sum();
+    }
+
+    
 }
   
 
