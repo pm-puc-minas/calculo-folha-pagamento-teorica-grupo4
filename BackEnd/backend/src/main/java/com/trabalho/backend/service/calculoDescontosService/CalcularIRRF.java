@@ -2,12 +2,12 @@ package com.trabalho.backend.service.calculoDescontosService;
 
 import org.springframework.stereotype.Service;
 
-import com.trabalho.backend.model.CalculoDescontos;
+import com.trabalho.backend.model.ICalculoDescontos;
 import com.trabalho.backend.model.Funcionario;
 import com.trabalho.backend.service.OutrosCalculosService.TotalSalarioBruto;
 
 @Service
-public class CalcularIRRF implements CalculoDescontos {
+public class CalcularIRRF implements ICalculoDescontos {
 
     private final TotalSalarioBruto totalSalarioBruto;
     private final CalcularINSS calcularINSS;

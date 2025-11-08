@@ -1,12 +1,11 @@
 package com.trabalho.backend.service.calculoAdicionaisService;
 
 import org.springframework.stereotype.Service;
-import com.trabalho.backend.model.CalculoAdicionais;
+import com.trabalho.backend.model.ICalculoAdicionais;
 import com.trabalho.backend.model.Funcionario;
-import com.trabalho.backend.model.GrauInsalubridade;
 
 @Service
-public class CalcularInsalubridade implements CalculoAdicionais {
+public class CalcularInsalubridade implements ICalculoAdicionais {
 
     @Override
     public double calcularAdicional(Funcionario f) {
@@ -14,15 +13,25 @@ public class CalcularInsalubridade implements CalculoAdicionais {
             return 0.0;
         }
 
+        double adicional;
         switch (f.getInsalubridade()) {
             case ALTO:
-                return f.getSalarioBase() * 0.40;
+                adicional = f.getSalarioBase() * 0.40;
+                break;
             case MEDIO:
-                return f.getSalarioBase() * 0.20;
+                adicional = f.getSalarioBase() * 0.20;
+                break;
             case BAIXO:
-                return f.getSalarioBase() * 0.10;
+                adicional = f.getSalarioBase() * 0.10;
+                break;
             default:
-                return 0.0; // sem risco
+                adicional = 0.0; // sem risco
         }
+
+        // Arredondar para 2 casas decimais
+        adicional = Math.round(adicional * 100.0) / 100.0;
+
+        return adicional;
     }
 }
+

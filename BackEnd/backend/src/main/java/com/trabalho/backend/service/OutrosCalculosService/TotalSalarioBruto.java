@@ -34,9 +34,12 @@ public class TotalSalarioBruto {
             adicional = insalubridade.calcularAdicional(f);
         }
 
+        double total = f.getSalarioBase() + adicional;
 
-        return f.getSalarioBase() + adicional;
+        //aarredondamento para 2 casas decimais
+        return Math.round(total * 100.0) / 100.0;
     }
 }
+
 
 
