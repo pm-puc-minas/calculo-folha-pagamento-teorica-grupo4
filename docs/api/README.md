@@ -1,4 +1,4 @@
-````markdown
+
 # README
 
 ## Projeto: Cálculo de Folha de Pagamento (Grupo 4)
