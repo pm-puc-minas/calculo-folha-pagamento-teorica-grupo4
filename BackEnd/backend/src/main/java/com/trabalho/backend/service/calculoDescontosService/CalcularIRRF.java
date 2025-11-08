@@ -49,8 +49,9 @@ public class CalcularIRRF implements CalculoDescontos {
 
         // Cálculo do IRRF
         double irrf = (salarioInicial * aliquota) - deducao;
+        irrf= Math.max(irrf, 0);
 
-        return (irrf * 100.0) / 100.0;
+        return Math.round(irrf * 100.0) / 100.0;
     }
 }
 
