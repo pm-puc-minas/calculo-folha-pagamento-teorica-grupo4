@@ -34,7 +34,8 @@ export const routes = [
       },
       {
         //rota Folha de pagamento
-        name: "Folha de Pagamento",
+        icon: <TableCellsIcon {...icon} />,
+        name: "Folhas de Pagamento",
         path: "/folha/:id",
         element: <FolhaFuncionario />,
       },
@@ -45,11 +46,13 @@ export const routes = [
     layout: "auth",
     pages: [
       {
+        icon: <HomeIcon {...icon} />,
         name: "sign in",
         path: "/sign-in",
         element: <SignIn />,
       },
       {
+        icon: <UserCircleIcon {...icon} />,
         name: "Cadastrar Funcionários",
         path: "/cadastrar_funcionarios",
         element: <SignUp />,
