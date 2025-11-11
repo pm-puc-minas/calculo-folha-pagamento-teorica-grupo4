@@ -8,6 +8,7 @@ import com.trabalho.backend.service.AdministradorService;
 
 @RestController
 @RequestMapping("/admin")
+@CrossOrigin(origins = "*")
 public class AdmController {
 
     private final AdministradorService adm;

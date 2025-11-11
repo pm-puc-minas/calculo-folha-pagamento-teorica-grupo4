@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Card,
   CardHeader,
@@ -7,22 +8,15 @@ import {
   Input,
   Button,
   Avatar,
-  Dialog,
-  DialogHeader,
-  DialogBody,
-  DialogFooter,
 } from "@material-tailwind/react";
 
 export function Tables() {
   const [funcionarios, setFuncionarios] = useState([]);
   const [search, setSearch] = useState("");
+  const [folhasGeradas, setFolhasGeradas] = useState([]); // <-- Novo estado
+  const navigate = useNavigate();
 
-  // Estado do modal
-  const [openModal, setOpenModal] = useState(false);
-  const [folhaGerada, setFolhaGerada] = useState(null);
-
-  const handleOpenModal = () => setOpenModal(!openModal);
-
+  // Buscar funcionários ao carregar
   useEffect(() => {
     fetch("http://localhost:8080/funcionarios/mostrarCampos")
       .then((res) => res.json())
@@ -30,34 +24,37 @@ export function Tables() {
       .catch((err) => console.error("Erro ao buscar funcionários:", err));
   }, []);
 
-  // Filtro por nome ou cargo
+  // Filtrar funcionários por nome ou cargo
   const filteredData = funcionarios.filter(
     (f) =>
       f.nome?.toLowerCase().includes(search.toLowerCase()) ||
       f.cargo?.toLowerCase().includes(search.toLowerCase())
   );
 
-  // Geração da folha com modal
-  const handleGerarFolha = (funcionario) => {
-    const dataAtual = new Date().toLocaleDateString("pt-BR");
-    const salarioLiquidoFicticio = (
-      Math.random() * (8000 - 3000) +
-      3000
-    ).toFixed(2);
+  // Gerar folha (não redireciona mais)
+  const handleGerarFolha = async (funcionario) => {
+    try {
+      const gerarResponse = await fetch(
+        `http://localhost:8080/folha-pagamento/gerar/${funcionario.idFuncionario}`,
+        { method: "POST" }
+      );
 
-    setFolhaGerada({
-      nome: funcionario.nome,
-      data: dataAtual,
-      salarioLiquido: salarioLiquidoFicticio,
-    });
+      if (!gerarResponse.ok) {
+        alert("Erro ao gerar folha de pagamento.");
+        return;
+      }
 
-    setOpenModal(true);
-
-    console.log(`Folha gerada para: ${funcionario.nome}`);
+      // Marca que este funcionário recebeu a folha
+      setFolhasGeradas((prev) => [...prev, funcionario.idFuncionario]);
+    } catch (error) {
+      console.error(error);
+      alert("Erro ao conectar com o servidor");
+    }
   };
 
-  const handleGerarFolhaTodos = () => {
-    console.log("Gerar folha para todos os funcionários");
+  // Ir para página da folha
+  const verFolha = (idFuncionario) => {
+    navigate(`/dashboard/folha/${idFuncionario}`);
   };
 
   return (
@@ -81,14 +78,6 @@ export function Tables() {
                 onChange={(e) => setSearch(e.target.value)}
               />
             </div>
-            <Button
-              color="blue"
-              size="sm"
-              onClick={handleGerarFolhaTodos}
-              className="whitespace-nowrap"
-            >
-              Gerar Folha para Todos
-            </Button>
           </div>
         </CardHeader>
 
@@ -114,20 +103,15 @@ export function Tables() {
 
             <tbody>
               {filteredData.length > 0 ? (
-                filteredData.map((f, key) => {
-                  const className = `py-3 px-5 ${
-                    key === filteredData.length - 1
-                      ? ""
-                      : "border-b border-blue-gray-50"
-                  }`;
+                filteredData.map((f) => {
+                  const className = "py-3 px-5 border-b border-blue-gray-50";
 
                   return (
-                    <tr key={f.id}>
-                      {/* Nome */}
+                    <tr key={f.idFuncionario}>
                       <td className={className}>
                         <div className="flex items-center gap-4">
                           <Avatar
-                            src={f.img || "https://via.placeholder.com/40"}
+                            src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
                             alt={f.nome}
                             size="sm"
                             variant="rounded"
@@ -140,36 +124,40 @@ export function Tables() {
                             >
                               {f.nome}
                             </Typography>
-                            <Typography className="text-xs font-normal text-blue-gray-500">
-                              {f.email || "—"}
-                            </Typography>
                           </div>
                         </div>
                       </td>
 
-                      {/* Cargo */}
                       <td className={className}>
                         <Typography className="text-xs font-semibold text-blue-gray-600">
                           {f.cargo || "—"}
                         </Typography>
                       </td>
 
-                      {/* Data de Admissão */}
                       <td className={className}>
                         <Typography className="text-xs font-semibold text-blue-gray-600">
                           {f.dataAdmissao || "—"}
                         </Typography>
                       </td>
 
-                      {/* Ações */}
                       <td className={className}>
-                        <Button
-                          size="sm"
-                          color="blue"
-                          onClick={() => handleGerarFolha(f)}
-                        >
-                          Gerar Folha
-                        </Button>
+                        {folhasGeradas.includes(f.idFuncionario) ? (
+                          <Button
+                            size="sm"
+                            color="green"
+                            onClick={() => verFolha(f.idFuncionario)}
+                          >
+                            Ver Folha
+                          </Button>
+                        ) : (
+                          <Button
+                            size="sm"
+                            color="blue"
+                            onClick={() => handleGerarFolha(f)}
+                          >
+                            Gerar Folha
+                          </Button>
+                        )}
                       </td>
                     </tr>
                   );
@@ -185,38 +173,18 @@ export function Tables() {
           </table>
         </CardBody>
       </Card>
-
-      {/* ✅ MODAL DE SUCESSO */}
-      <Dialog open={openModal} handler={handleOpenModal}>
-        <DialogHeader>✅ Folha gerada com sucesso!</DialogHeader>
-        <DialogBody divider>
-          {folhaGerada ? (
-            <>
-              <Typography variant="h6" color="blue-gray">
-                Funcionário: {folhaGerada.nome}
-              </Typography>
-              <Typography variant="small" color="blue-gray">
-                Data da geração: {folhaGerada.data}
-              </Typography>
-              <Typography variant="small" color="blue-gray">
-                Salário líquido: R$ {folhaGerada.salarioLiquido}
-              </Typography>
-            </>
-          ) : (
-            <Typography>Carregando...</Typography>
-          )}
-        </DialogBody>
-        <DialogFooter>
-          <Button color="blue" onClick={handleOpenModal}>
-            Fechar
-          </Button>
-        </DialogFooter>
-      </Dialog>
     </div>
   );
 }
 
 export default Tables;
+
+
+
+
+
+
+
 
 
 
