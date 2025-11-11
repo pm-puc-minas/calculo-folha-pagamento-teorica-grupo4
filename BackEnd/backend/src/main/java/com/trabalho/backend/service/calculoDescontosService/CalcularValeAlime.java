@@ -22,13 +22,9 @@ public class CalcularValeAlime implements ICalculoDescontos {
             throw new ValoresBordasException("O valor nao pode ser negativo.");
         }
 
-        // Calcular o desconto
-        double valeAlimentacao = f.getDiasTrabalhadasMes() * f.getCustoDiarioAlimentacao();
-
-        // Arredondar para 2 casas decimais
-        valeAlimentacao = Math.round(valeAlimentacao * 100.0) / 100.0;
-
-        return valeAlimentacao;
+        double valorTotal = f.getDiasTrabalhadasMes() * f.getCustoDiarioAlimentacao();
+        double descontoFuncionario = valorTotal * 0.20; // 20% do custo
+        return Math.round(descontoFuncionario * 100.0) / 100.0;
     }
 }
 

@@ -13,25 +13,26 @@ import {
 export function Tables() {
   const [funcionarios, setFuncionarios] = useState([]);
   const [search, setSearch] = useState("");
-  const [folhasGeradas, setFolhasGeradas] = useState([]); // <-- Novo estado
   const navigate = useNavigate();
 
-  // Buscar funcionários ao carregar
-  useEffect(() => {
+  // Buscar funcionários
+  const carregarFuncionarios = () => {
     fetch("http://localhost:8080/funcionarios/mostrarCampos")
       .then((res) => res.json())
       .then((data) => setFuncionarios(data))
       .catch((err) => console.error("Erro ao buscar funcionários:", err));
+  };
+
+  useEffect(() => {
+    carregarFuncionarios();
   }, []);
 
-  // Filtrar funcionários por nome ou cargo
   const filteredData = funcionarios.filter(
     (f) =>
       f.nome?.toLowerCase().includes(search.toLowerCase()) ||
       f.cargo?.toLowerCase().includes(search.toLowerCase())
   );
 
-  // Gerar folha (não redireciona mais)
   const handleGerarFolha = async (funcionario) => {
     try {
       const gerarResponse = await fetch(
@@ -44,15 +45,15 @@ export function Tables() {
         return;
       }
 
-      // Marca que este funcionário recebeu a folha
-      setFolhasGeradas((prev) => [...prev, funcionario.idFuncionario]);
+      // Recarrega lista já com possuiFolha atualizado pelo backend
+      carregarFuncionarios();
+
     } catch (error) {
       console.error(error);
       alert("Erro ao conectar com o servidor");
     }
   };
 
-  // Ir para página da folha
   const verFolha = (idFuncionario) => {
     navigate(`/dashboard/folha/${idFuncionario}`);
   };
@@ -116,15 +117,13 @@ export function Tables() {
                             size="sm"
                             variant="rounded"
                           />
-                          <div>
-                            <Typography
-                              variant="small"
-                              color="blue-gray"
-                              className="font-semibold"
-                            >
-                              {f.nome}
-                            </Typography>
-                          </div>
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-semibold"
+                          >
+                            {f.nome}
+                          </Typography>
                         </div>
                       </td>
 
@@ -141,7 +140,7 @@ export function Tables() {
                       </td>
 
                       <td className={className}>
-                        {folhasGeradas.includes(f.idFuncionario) ? (
+                        {f.possuiFolha ? (
                           <Button
                             size="sm"
                             color="green"
@@ -178,6 +177,7 @@ export function Tables() {
 }
 
 export default Tables;
+
 
 
 

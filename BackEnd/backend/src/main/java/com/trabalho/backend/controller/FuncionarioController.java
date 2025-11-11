@@ -13,6 +13,7 @@ import com.trabalho.backend.event.CadastroFuncionarioEvent;
 import com.trabalho.backend.exception.DadosInvalidosException;
 import com.trabalho.backend.exception.ValoresBordasException;
 import com.trabalho.backend.model.Funcionario;
+import com.trabalho.backend.repository.FolhaPagamentoRepository;
 import com.trabalho.backend.repository.FuncionarioRepository;
 
 @RestController
@@ -24,6 +25,8 @@ public class FuncionarioController {
     private FuncionarioRepository funcionario;
     @Autowired
     private ApplicationEventPublisher aviso;
+    @Autowired
+    private FolhaPagamentoRepository folhaRepor;
 
     // cadastrar um funcionário
     @PostMapping
@@ -56,8 +59,10 @@ public class FuncionarioController {
                     f.getIdFuncionario(),
                     f.getNome(),
                     f.getCargo(),
-                    f.getDataAdmissao()
+                    f.getDataAdmissao(),
+                    folhaRepor.findByFuncionario(f).isPresent()
             ))
+
             .collect(Collectors.toList());
 
         if (lista.isEmpty()) {
