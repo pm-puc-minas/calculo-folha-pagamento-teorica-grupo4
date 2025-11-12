@@ -50,6 +50,18 @@ public class FuncionarioController {
         return ResponseEntity.ok(lista);
     }
 
+    //deletar um funcionario
+    @DeleteMapping("/deletarFuncionario/{idFuncionario}")
+    public ResponseEntity<String> removerFuncionario(@PathVariable Long idFuncionario) {
+        // o funcionario existe?
+        if(funcionario.existsById(idFuncionario)){
+            funcionario.deleteById(idFuncionario);
+            return ResponseEntity.ok("Funcionario Removido com sucesso");
+        } else {
+            return ResponseEntity.status(404).body("Funcionário não encontrado!!");
+        }
+    }
+
     // listar campos específicos (para exibição no front)
     @GetMapping("/mostrarCampos")
     public ResponseEntity<List<FuncionarioDTO>> listarCamposEspecifico(){

@@ -14,7 +14,7 @@ import {
 export function FolhaFuncionario() {
   const [folhas, setFolhas] = useState([]);
   const [search, setSearch] = useState("");
-  const [folhaSelecionada, setFolhaSelecionada] = useState(null); // modal
+  const [folhaSelecionada, setFolhaSelecionada] = useState(null);
 
   useEffect(() => {
     const fetchFolhas = async () => {
@@ -29,6 +29,29 @@ export function FolhaFuncionario() {
 
     fetchFolhas();
   }, []);
+
+  // Função para deletar folha
+  const deletarFolha = async (idFuncionario) => {
+    if (!window.confirm("Tem certeza que deseja deletar esta folha?")) return;
+
+    try {
+      const response = await fetch(
+        `http://localhost:8080/folha-pagamento/deletarFolha/${idFuncionario}`,
+        { method: "DELETE" }
+      );
+
+      if (response.ok) {
+        alert("Folha deletada com sucesso!");
+        setFolhas(folhas.filter((f) => f.funcionario.idFuncionario !== idFuncionario));
+        setFolhaSelecionada(null);
+      } else {
+        alert("Erro ao deletar a folha.");
+      }
+    } catch (error) {
+      console.error("Erro na exclusão:", error);
+      alert("Erro ao deletar a folha.");
+    }
+  };
 
   // Filtrar folhas pelo nome do funcionário
   const filteredFolhas = folhas.filter((f) =>
@@ -61,19 +84,21 @@ export function FolhaFuncionario() {
           <table className="w-full min-w-[640px] table-auto">
             <thead>
               <tr>
-                {["Nome", "Cargo", "Salário Bruto", "Salário Líquido", "Data", "Ações"].map((el) => (
-                  <th
-                    key={el}
-                    className="border-b border-blue-gray-50 py-3 px-5 text-left"
-                  >
-                    <Typography
-                      variant="small"
-                      className="text-[11px] font-bold uppercase text-blue-gray-400"
+                {["Nome", "Cargo", "Salário Bruto", "Salário Líquido", "Data", "Ações"].map(
+                  (el) => (
+                    <th
+                      key={el}
+                      className="border-b border-blue-gray-50 py-3 px-5 text-left"
                     >
-                      {el}
-                    </Typography>
-                  </th>
-                ))}
+                      <Typography
+                        variant="small"
+                        className="text-[11px] font-bold uppercase text-blue-gray-400"
+                      >
+                        {el}
+                      </Typography>
+                    </th>
+                  )
+                )}
               </tr>
             </thead>
 
@@ -125,23 +150,58 @@ export function FolhaFuncionario() {
         <DialogBody divider className="space-y-2">
           {folhaSelecionada && (
             <>
-              <Typography><strong>Nome:</strong> {folhaSelecionada.funcionario.nome}</Typography>
-              <Typography><strong>CPF:</strong> {folhaSelecionada.funcionario.cpf}</Typography>
-              <Typography><strong>Cargo:</strong> {folhaSelecionada.funcionario.cargo}</Typography>
-              <Typography><strong>Salário Base:</strong> R$ {folhaSelecionada.salarioBase.toFixed(2)}</Typography>
-              <Typography><strong>Salário Bruto:</strong> R$ {folhaSelecionada.salarioBruto.toFixed(2)}</Typography>
-              <Typography><strong>Salário Líquido:</strong> R$ {folhaSelecionada.salarioLiquido.toFixed(2)}</Typography>
-              <Typography><strong>FGTS:</strong> R$ {folhaSelecionada.fgts.toFixed(2)}</Typography>
-              <Typography><strong>INSS:</strong> R$ {folhaSelecionada.inss.toFixed(2)}</Typography>
-              <Typography><strong>IRRF:</strong> R$ {folhaSelecionada.irrf.toFixed(2)}</Typography>
-              <Typography><strong>Vale Transporte:</strong> R$ {folhaSelecionada.vt.toFixed(2)}</Typography>
-              <Typography><strong>Vale Alimentação:</strong> R$ {folhaSelecionada.va.toFixed(2)}</Typography>
-              <Typography><strong>Data da geração:</strong> {folhaSelecionada.geracaoData}</Typography>
+              <Typography>
+                <strong>Nome:</strong> {folhaSelecionada.funcionario.nome}
+              </Typography>
+              <Typography>
+                <strong>CPF:</strong> {folhaSelecionada.funcionario.cpf}
+              </Typography>
+              <Typography>
+                <strong>Cargo:</strong> {folhaSelecionada.funcionario.cargo}
+              </Typography>
+              <Typography>
+                <strong>Salário Base:</strong> R${" "}
+                {folhaSelecionada.salarioBase.toFixed(2)}
+              </Typography>
+              <Typography>
+                <strong>Salário Bruto:</strong> R${" "}
+                {folhaSelecionada.salarioBruto.toFixed(2)}
+              </Typography>
+              <Typography>
+                <strong>Salário Líquido:</strong> R${" "}
+                {folhaSelecionada.salarioLiquido.toFixed(2)}
+              </Typography>
+              <Typography>
+                <strong>FGTS:</strong> R${" "}
+                {folhaSelecionada.fgts.toFixed(2)}
+              </Typography>
+              <Typography>
+                <strong>INSS:</strong> R${" "}
+                {folhaSelecionada.inss.toFixed(2)}
+              </Typography>
+              <Typography>
+                <strong>IRRF:</strong> R${" "}
+                {folhaSelecionada.irrf.toFixed(2)}
+              </Typography>
+              <Typography>
+                <strong>Vale Transporte:</strong> R${" "}
+                {folhaSelecionada.vt.toFixed(2)}
+              </Typography>
+              <Typography>
+                <strong>Vale Alimentação:</strong> R${" "}
+                {folhaSelecionada.va.toFixed(2)}
+              </Typography>
+              <Typography>
+                <strong>Data da geração:</strong> {folhaSelecionada.geracaoData}
+              </Typography>
             </>
           )}
 
-          <div className="flex justify-end pt-4">
-            <Button color="red" onClick={() => setFolhaSelecionada(null)}>
+          <div className="flex justify-end gap-3 pt-4">
+            <Button color="red" onClick={() => deletarFolha(folhaSelecionada.funcionario.idFuncionario)}>
+              Deletar Folha
+            </Button>
+            <Button color="blue-gray" onClick={() => setFolhaSelecionada(null)}>
               Fechar
             </Button>
           </div>
@@ -152,5 +212,6 @@ export function FolhaFuncionario() {
 }
 
 export default FolhaFuncionario;
+
 
 

@@ -1,21 +1,41 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Typography, Card, CardBody } from "@material-tailwind/react";
 import { StatisticsCard } from "@/widgets/cards";
-import { UserGroupIcon, CurrencyDollarIcon, UsersIcon } from "@heroicons/react/24/outline";
+import { UserGroupIcon, CurrencyDollarIcon } from "@heroicons/react/24/outline";
 import { PieChart, Pie, Cell, Legend, Tooltip } from "recharts";
 
 export function Home() {
-  // Dados fictícios
-  const totalFuncionarios = 42;
-  const totalSalarioBruto = 125000; // fictício
-  const totalSalarioLiquido = 98000; // fictício
-  const totalDependentes = 15; // fictício
+  // Estados para armazenar dados vindos dos endpoints
+  const [totalFuncionarios, setTotalFuncionarios] = useState(0);
+  const [totalSalarioBruto, setTotalSalarioBruto] = useState(0);
+  const [totalSalarioLiquido, setTotalSalarioLiquido] = useState(0);
+  const [mediaSalarioLiquido, setMediaSalarioLiquido] = useState(0);
 
-  // Dados para o gráfico de pizza
+  // Carregar dados dos endpoints ao montar o componente
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const respFunc = await fetch("http://localhost:8080/folha-pagamento/TotalFuncionario");
+        const respBruto = await fetch("http://localhost:8080/folha-pagamento/TotalBruto");
+        const respLiquido = await fetch("http://localhost:8080/folha-pagamento/TotalLiquido");
+        const respMedia = await fetch("http://localhost:8080/folha-pagamento/media");
+
+        setTotalFuncionarios(await respFunc.json());
+        setTotalSalarioBruto(await respBruto.json());
+        setTotalSalarioLiquido(await respLiquido.json());
+        setMediaSalarioLiquido(await respMedia.json());
+      } catch (error) {
+        console.error("Erro ao buscar dados:", error);
+      }
+    }
+    fetchData();
+  }, []);
+
+  // gráfico de pizza
   const pieData = [
     { name: "Salário Bruto", value: totalSalarioBruto },
     { name: "Salário Líquido", value: totalSalarioLiquido },
-    { name: "Dependentes", value: totalDependentes },
+    { name: "Média Salário Líquido", value: mediaSalarioLiquido },
   ];
 
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28"];
@@ -30,7 +50,7 @@ export function Home() {
           icon={<UserGroupIcon className="w-6 h-6 text-white" />}
           footer={
             <Typography className="font-normal text-black-600">
-              Total de funcionários cadastrados no sistema
+              Total de funcionários cadastrados
             </Typography>
           }
         />
@@ -40,7 +60,7 @@ export function Home() {
           icon={<CurrencyDollarIcon className="w-6 h-6 text-white" />}
           footer={
             <Typography className="font-normal text-black-600">
-              Soma total do salário bruto
+              Soma total dos salários brutos
             </Typography>
           }
         />
@@ -50,17 +70,17 @@ export function Home() {
           icon={<CurrencyDollarIcon className="w-6 h-6 text-white" />}
           footer={
             <Typography className="font-normal text-black-600">
-              Soma total do salário líquido
+              Soma total dos salários líquidos
             </Typography>
           }
         />
         <StatisticsCard
-          title="Dependentes"
-          value={totalDependentes}
-          icon={<UsersIcon className="w-6 h-6 text-white" />}
+          title="Média Salário Líquido"
+          value={`R$ ${mediaSalarioLiquido.toLocaleString()}`}
+          icon={<CurrencyDollarIcon className="w-6 h-6 text-white" />}
           footer={
             <Typography className="font-normal text-black-600">
-              Total de dependentes
+              Média geral dos salários líquidos
             </Typography>
           }
         />
@@ -96,6 +116,7 @@ export function Home() {
 }
 
 export default Home;
+
 
 
 

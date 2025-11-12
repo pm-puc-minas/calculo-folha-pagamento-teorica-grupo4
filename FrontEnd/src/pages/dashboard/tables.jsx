@@ -33,6 +33,7 @@ export function Tables() {
       f.cargo?.toLowerCase().includes(search.toLowerCase())
   );
 
+  // Gerar folha
   const handleGerarFolha = async (funcionario) => {
     try {
       const gerarResponse = await fetch(
@@ -45,17 +46,39 @@ export function Tables() {
         return;
       }
 
-      // Recarrega lista já com possuiFolha atualizado pelo backend
       carregarFuncionarios();
-
     } catch (error) {
       console.error(error);
       alert("Erro ao conectar com o servidor");
     }
   };
 
+  // Ver folha
   const verFolha = (idFuncionario) => {
     navigate(`/dashboard/folha/${idFuncionario}`);
+  };
+
+  // Deletar funcionário
+  const handleDeletarFuncionario = async (idFuncionario) => {
+    if (!window.confirm("Tem certeza que deseja deletar este funcionário?")) return;
+
+    try {
+      const response = await fetch(
+        `http://localhost:8080/funcionarios/deletarFuncionario/${idFuncionario}`,
+        { method: "DELETE" }
+      );
+
+      if (!response.ok) {
+        alert("Erro ao deletar funcionário.");
+        return;
+      }
+
+      alert("Funcionário deletado com sucesso!");
+      carregarFuncionarios();
+    } catch (error) {
+      console.error(error);
+      alert("Erro ao conectar com o servidor");
+    }
   };
 
   return (
@@ -139,7 +162,7 @@ export function Tables() {
                         </Typography>
                       </td>
 
-                      <td className={className}>
+                      <td className={`${className} flex gap-2`}>
                         {f.possuiFolha ? (
                           <Button
                             size="sm"
@@ -157,6 +180,14 @@ export function Tables() {
                             Gerar Folha
                           </Button>
                         )}
+
+                        <Button
+                          size="sm"
+                          color="red"
+                          onClick={() => handleDeletarFuncionario(f.idFuncionario)}
+                        >
+                          Deletar
+                        </Button>
                       </td>
                     </tr>
                   );
@@ -177,6 +208,7 @@ export function Tables() {
 }
 
 export default Tables;
+
 
 
 

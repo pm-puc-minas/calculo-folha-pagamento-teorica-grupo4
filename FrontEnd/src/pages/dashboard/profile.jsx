@@ -31,7 +31,7 @@ export function Profile() {
               variant="rounded"
               className="border-2 border-white shadow-lg"
             />
-            {/* Icon sobre a foto */}
+            {/* Icon na foto */}
             <img
               src={admin.icon}
               alt="Admin Icon"
@@ -58,12 +58,12 @@ export function Profile() {
               >
                 <PencilIcon className="h-4 w-4" />
               </Button>
-            </Tooltip>
+            </Tooltip> 
           </div>
         </div>
       </div>
 
-      {/* Card com informações do admin */}
+      {/*informações do admin */}
       <Card className="mx-3 -mt-12 mb-6 lg:mx-4 border border-blue-gray-100 shadow-md">
         <CardBody className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
