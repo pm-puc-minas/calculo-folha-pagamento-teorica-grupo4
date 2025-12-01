@@ -165,6 +165,27 @@ public class FolhaPagamentoService {
             .sum();
     }
 
+    //metodo de somar todos salario brutos
+    public Double somarSalariosBrutos(){
+        return folhaRepo.findAll().stream() // busca todas folhas
+            .mapToDouble(FolhaPagamento::getSalarioBruto) // pega todos salarios Brutos
+            .sum(); // soma todos salarios brutos
+    }
+
+    //metodo de somar todos salario liquidos
+    public Double somarSalariosLiquidos(){
+        return folhaRepo.findAll().stream() // busca todas folhas
+            .mapToDouble(FolhaPagamento::getSalarioLiquido) // pega todos salarios Brutos
+            .sum(); // soma todos salarios brutos
+    }
+
+    //metodo para contar quantos funcionarios existem
+    public long numeroFuncionarios(){
+        return funcionarioRepo.count();
+    }
+
+
+
     
 }
   

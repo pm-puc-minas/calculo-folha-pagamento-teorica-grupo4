@@ -2,11 +2,8 @@ import {
   HomeIcon,
   UserCircleIcon,
   TableCellsIcon,
-  InformationCircleIcon,
-  ServerStackIcon,
-  RectangleStackIcon,
 } from "@heroicons/react/24/solid";
-import { Home, Profile, Tables, Notifications } from "@/pages/dashboard";
+import { Home, Profile, Tables, FolhaFuncionario } from "@/pages/dashboard"; // importar FolhaFuncionario
 import { SignIn, SignUp } from "@/pages/auth";
 
 const icon = {
@@ -35,6 +32,13 @@ export const routes = [
         path: "/funcionarios",
         element: <Tables />,
       },
+      {
+        //rota Folha de pagamento
+        icon: <TableCellsIcon {...icon} />,
+        name: "Folhas de Pagamento",
+        path: "/folha/:id",
+        element: <FolhaFuncionario />,
+      },
     ],
   },
   {
@@ -42,14 +46,13 @@ export const routes = [
     layout: "auth",
     pages: [
       {
-        icon: <ServerStackIcon {...icon} />,
+        icon: <HomeIcon {...icon} />,
         name: "sign in",
         path: "/sign-in",
         element: <SignIn />,
       },
-      
       {
-        icon: <RectangleStackIcon {...icon} />,
+        icon: <UserCircleIcon {...icon} />,
         name: "Cadastrar Funcionários",
         path: "/cadastrar_funcionarios",
         element: <SignUp />,
@@ -59,3 +62,4 @@ export const routes = [
 ];
 
 export default routes;
+

@@ -48,7 +48,7 @@ public class CalcularSalarioLiquido {
         double descontoTransporte = calcularValeTrans.calcularDesconto(funcionario);
         
         // domar deduções
-        double totalDeducoes = descontoINSS + descontoIRRF + descontoAlimentacao + descontoTransporte;
+        double totalDeducoes = descontoINSS + descontoIRRF + descontoTransporte;
         
         // calcular o salario liquido
         double salarioLiquido = salarioBruto - totalDeducoes;

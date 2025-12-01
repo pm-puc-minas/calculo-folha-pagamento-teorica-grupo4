@@ -58,7 +58,7 @@ public class FolhaDePagamentoController {
     }
 
     // Remover folha pelo ID do funcionário
-    @DeleteMapping("/funcionario/{idFuncionario}")
+    @DeleteMapping("/deletarFolha/{idFuncionario}")
     public ResponseEntity<String> removerFolha(@PathVariable Long idFuncionario) {
         boolean removido = folhaService.removerFolhaFuncionario(idFuncionario);
         if (removido) {
@@ -86,6 +86,25 @@ public class FolhaDePagamentoController {
         Double media = folhaService.calcularMediaSalarioGeral();
         return ResponseEntity.ok(media);
     }
+
+    @GetMapping("/TotalBruto")
+    public ResponseEntity<Double> totalSalarioBruto(){
+        Double total= folhaService.somarSalariosBrutos();
+        return ResponseEntity.ok(total);
+    }
+
+    @GetMapping("/TotalLiquido")
+    public ResponseEntity<Double> totalSalarioLiquido(){
+        Double total= folhaService.somarSalariosLiquidos();
+        return ResponseEntity.ok(total);
+    }
+
+    @GetMapping("/TotalFuncionario")
+    public ResponseEntity<Long> totalFuncionario(){
+        long total= folhaService.numeroFuncionarios();
+        return ResponseEntity.ok(total);
+    }
+
 
 }
 

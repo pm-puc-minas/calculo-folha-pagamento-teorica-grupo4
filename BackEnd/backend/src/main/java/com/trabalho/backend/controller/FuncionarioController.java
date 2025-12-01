@@ -13,6 +13,7 @@ import com.trabalho.backend.event.CadastroFuncionarioEvent;
 import com.trabalho.backend.exception.DadosInvalidosException;
 import com.trabalho.backend.exception.ValoresBordasException;
 import com.trabalho.backend.model.Funcionario;
+import com.trabalho.backend.repository.FolhaPagamentoRepository;
 import com.trabalho.backend.repository.FuncionarioRepository;
 
 @RestController
@@ -24,6 +25,8 @@ public class FuncionarioController {
     private FuncionarioRepository funcionario;
     @Autowired
     private ApplicationEventPublisher aviso;
+    @Autowired
+    private FolhaPagamentoRepository folhaRepor;
 
     // cadastrar um funcionário
     @PostMapping
@@ -47,6 +50,18 @@ public class FuncionarioController {
         return ResponseEntity.ok(lista);
     }
 
+    //deletar um funcionario
+    @DeleteMapping("/deletarFuncionario/{idFuncionario}")
+    public ResponseEntity<String> removerFuncionario(@PathVariable Long idFuncionario) {
+        // o funcionario existe?
+        if(funcionario.existsById(idFuncionario)){
+            funcionario.deleteById(idFuncionario);
+            return ResponseEntity.ok("Funcionario Removido com sucesso");
+        } else {
+            return ResponseEntity.status(404).body("Funcionário não encontrado!!");
+        }
+    }
+
     // listar campos específicos (para exibição no front)
     @GetMapping("/mostrarCampos")
     public ResponseEntity<List<FuncionarioDTO>> listarCamposEspecifico(){
@@ -56,8 +71,10 @@ public class FuncionarioController {
                     f.getIdFuncionario(),
                     f.getNome(),
                     f.getCargo(),
-                    f.getDataAdmissao()
+                    f.getDataAdmissao(),
+                    folhaRepor.findByFuncionario(f).isPresent()
             ))
+
             .collect(Collectors.toList());
 
         if (lista.isEmpty()) {

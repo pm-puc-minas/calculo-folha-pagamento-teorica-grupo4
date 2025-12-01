@@ -9,38 +9,24 @@ public class FuncionarioDTO {
     private String cargo;
     private LocalDate dataAdmissao;
 
+    private boolean possuiFolha; // <--- NOVO
+
     public FuncionarioDTO(){}
-    
 
-    public FuncionarioDTO(Long idFuncionario, String nome,String cargo, LocalDate dataAdmissao) {
-        this.idFuncionario=idFuncionario;
+    public FuncionarioDTO(Long idFuncionario, String nome, String cargo, LocalDate dataAdmissao, boolean possuiFolha) {
+        this.idFuncionario = idFuncionario;
         this.nome = nome;
-        this.dataAdmissao = dataAdmissao;
-        this.cargo=cargo;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public LocalDate getDataAdmissao() {
-        return dataAdmissao;
-    }
-
-    public void setDataAdmissao(LocalDate dataAdmissao) {
-        this.dataAdmissao = dataAdmissao;
-    }
-
-    public String getCargo() {
-        return cargo;
-    }
-
-    public void setCargo(String cargo) {
         this.cargo = cargo;
+        this.dataAdmissao = dataAdmissao;
+        this.possuiFolha = possuiFolha; // <--- NOVO
+    }
+
+    public boolean isPossuiFolha() {
+        return possuiFolha;
+    }
+
+    public void setPossuiFolha(boolean possuiFolha) {
+        this.possuiFolha = possuiFolha;
     }
 
     public long getIdFuncionario() {
@@ -51,7 +37,31 @@ public class FuncionarioDTO {
         this.idFuncionario = idFuncionario;
     }
 
-    
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getCargo() {
+        return cargo;
+    }
+
+    public void setCargo(String cargo) {
+        this.cargo = cargo;
+    }
+
+    public LocalDate getDataAdmissao() {
+        return dataAdmissao;
+    }
+
+    public void setDataAdmissao(LocalDate dataAdmissao) {
+        this.dataAdmissao = dataAdmissao;
+    }
+
     
 }
+
 

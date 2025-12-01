@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Card,
   CardHeader,
@@ -7,57 +8,77 @@ import {
   Input,
   Button,
   Avatar,
-  Dialog,
-  DialogHeader,
-  DialogBody,
-  DialogFooter,
 } from "@material-tailwind/react";
 
 export function Tables() {
   const [funcionarios, setFuncionarios] = useState([]);
   const [search, setSearch] = useState("");
+  const navigate = useNavigate();
 
-  // Estado do modal
-  const [openModal, setOpenModal] = useState(false);
-  const [folhaGerada, setFolhaGerada] = useState(null);
-
-  const handleOpenModal = () => setOpenModal(!openModal);
-
-  useEffect(() => {
+  // Buscar funcionários
+  const carregarFuncionarios = () => {
     fetch("http://localhost:8080/funcionarios/mostrarCampos")
       .then((res) => res.json())
       .then((data) => setFuncionarios(data))
       .catch((err) => console.error("Erro ao buscar funcionários:", err));
+  };
+
+  useEffect(() => {
+    carregarFuncionarios();
   }, []);
 
-  // Filtro por nome ou cargo
   const filteredData = funcionarios.filter(
     (f) =>
       f.nome?.toLowerCase().includes(search.toLowerCase()) ||
       f.cargo?.toLowerCase().includes(search.toLowerCase())
   );
 
-  // Geração da folha com modal
-  const handleGerarFolha = (funcionario) => {
-    const dataAtual = new Date().toLocaleDateString("pt-BR");
-    const salarioLiquidoFicticio = (
-      Math.random() * (8000 - 3000) +
-      3000
-    ).toFixed(2);
+  // Gerar folha
+  const handleGerarFolha = async (funcionario) => {
+    try {
+      const gerarResponse = await fetch(
+        `http://localhost:8080/folha-pagamento/gerar/${funcionario.idFuncionario}`,
+        { method: "POST" }
+      );
 
-    setFolhaGerada({
-      nome: funcionario.nome,
-      data: dataAtual,
-      salarioLiquido: salarioLiquidoFicticio,
-    });
+      if (!gerarResponse.ok) {
+        alert("Erro ao gerar folha de pagamento.");
+        return;
+      }
 
-    setOpenModal(true);
-
-    console.log(`Folha gerada para: ${funcionario.nome}`);
+      carregarFuncionarios();
+    } catch (error) {
+      console.error(error);
+      alert("Erro ao conectar com o servidor");
+    }
   };
 
-  const handleGerarFolhaTodos = () => {
-    console.log("Gerar folha para todos os funcionários");
+  // Ver folha
+  const verFolha = (idFuncionario) => {
+    navigate(`/dashboard/folha/${idFuncionario}`);
+  };
+
+  // Deletar funcionário
+  const handleDeletarFuncionario = async (idFuncionario) => {
+    if (!window.confirm("Tem certeza que deseja deletar este funcionário?")) return;
+
+    try {
+      const response = await fetch(
+        `http://localhost:8080/funcionarios/deletarFuncionario/${idFuncionario}`,
+        { method: "DELETE" }
+      );
+
+      if (!response.ok) {
+        alert("Erro ao deletar funcionário.");
+        return;
+      }
+
+      alert("Funcionário deletado com sucesso!");
+      carregarFuncionarios();
+    } catch (error) {
+      console.error(error);
+      alert("Erro ao conectar com o servidor");
+    }
   };
 
   return (
@@ -81,14 +102,6 @@ export function Tables() {
                 onChange={(e) => setSearch(e.target.value)}
               />
             </div>
-            <Button
-              color="blue"
-              size="sm"
-              onClick={handleGerarFolhaTodos}
-              className="whitespace-nowrap"
-            >
-              Gerar Folha para Todos
-            </Button>
           </div>
         </CardHeader>
 
@@ -114,61 +127,66 @@ export function Tables() {
 
             <tbody>
               {filteredData.length > 0 ? (
-                filteredData.map((f, key) => {
-                  const className = `py-3 px-5 ${
-                    key === filteredData.length - 1
-                      ? ""
-                      : "border-b border-blue-gray-50"
-                  }`;
+                filteredData.map((f) => {
+                  const className = "py-3 px-5 border-b border-blue-gray-50";
 
                   return (
-                    <tr key={f.id}>
-                      {/* Nome */}
+                    <tr key={f.idFuncionario}>
                       <td className={className}>
                         <div className="flex items-center gap-4">
                           <Avatar
-                            src={f.img || "https://via.placeholder.com/40"}
+                            src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
                             alt={f.nome}
                             size="sm"
                             variant="rounded"
                           />
-                          <div>
-                            <Typography
-                              variant="small"
-                              color="blue-gray"
-                              className="font-semibold"
-                            >
-                              {f.nome}
-                            </Typography>
-                            <Typography className="text-xs font-normal text-blue-gray-500">
-                              {f.email || "—"}
-                            </Typography>
-                          </div>
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-semibold"
+                          >
+                            {f.nome}
+                          </Typography>
                         </div>
                       </td>
 
-                      {/* Cargo */}
                       <td className={className}>
                         <Typography className="text-xs font-semibold text-blue-gray-600">
                           {f.cargo || "—"}
                         </Typography>
                       </td>
 
-                      {/* Data de Admissão */}
                       <td className={className}>
                         <Typography className="text-xs font-semibold text-blue-gray-600">
                           {f.dataAdmissao || "—"}
                         </Typography>
                       </td>
 
-                      {/* Ações */}
-                      <td className={className}>
+                      <td className={`${className} flex gap-2`}>
+                        {f.possuiFolha ? (
+                          <Button
+                            size="sm"
+                            color="green"
+                            onClick={() => verFolha(f.idFuncionario)}
+                          >
+                            Ver Folha
+                          </Button>
+                        ) : (
+                          <Button
+                            size="sm"
+                            color="blue"
+                            onClick={() => handleGerarFolha(f)}
+                          >
+                            Gerar Folha
+                          </Button>
+                        )}
+
                         <Button
                           size="sm"
-                          color="blue"
-                          onClick={() => handleGerarFolha(f)}
+                          color="red"
+                          onClick={() => handleDeletarFuncionario(f.idFuncionario)}
                         >
-                          Gerar Folha
+                          Deletar
                         </Button>
                       </td>
                     </tr>
@@ -185,38 +203,20 @@ export function Tables() {
           </table>
         </CardBody>
       </Card>
-
-      {/* ✅ MODAL DE SUCESSO */}
-      <Dialog open={openModal} handler={handleOpenModal}>
-        <DialogHeader>✅ Folha gerada com sucesso!</DialogHeader>
-        <DialogBody divider>
-          {folhaGerada ? (
-            <>
-              <Typography variant="h6" color="blue-gray">
-                Funcionário: {folhaGerada.nome}
-              </Typography>
-              <Typography variant="small" color="blue-gray">
-                Data da geração: {folhaGerada.data}
-              </Typography>
-              <Typography variant="small" color="blue-gray">
-                Salário líquido: R$ {folhaGerada.salarioLiquido}
-              </Typography>
-            </>
-          ) : (
-            <Typography>Carregando...</Typography>
-          )}
-        </DialogBody>
-        <DialogFooter>
-          <Button color="blue" onClick={handleOpenModal}>
-            Fechar
-          </Button>
-        </DialogFooter>
-      </Dialog>
     </div>
   );
 }
 
 export default Tables;
+
+
+
+
+
+
+
+
+
 
 
 
