@@ -62,7 +62,6 @@ A aplicação deve ser desenvolvida em **Java com Spring Boot**, expondo um back
 
 ## 👥 Equipe
 - Gabriel Coelho
-- Bernardo Carvalho 
 - João Pedro de Oliveira 
 - João Gabriel
 
