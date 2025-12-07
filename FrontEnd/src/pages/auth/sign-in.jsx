@@ -1,7 +1,6 @@
 import {
   Card,
   Input,
-  Checkbox,
   Button,
   Typography,
 } from "@material-tailwind/react";
@@ -36,14 +35,12 @@ export function SignIn() {
 
       const data = await response.text();
 
-
-      // Se o backend retornar token, você salva no localStorage:
       if (data.token) {
         localStorage.setItem("token", data.token);
       }
 
       alert("Login realizado com sucesso!");
-      navigate("/dashboard"); // Altere para onde deseja ir após login
+      navigate("/dashboard");
 
     } catch (error) {
       console.error(error);
@@ -121,21 +118,6 @@ export function SignIn() {
           >
             Registre-se
           </Button>
-
-          <div className="flex items-center justify-between gap-2 mt-6">
-            <Checkbox
-              label={
-                <Typography
-                  variant="small"
-                  color="gray"
-                  className="flex items-center justify-start font-medium"
-                >
-                  Subscribe me to newsletter
-                </Typography>
-              }
-              containerProps={{ className: "-ml-2.5" }}
-            />
-          </div>
         </form>
       </div>
 
@@ -150,6 +132,7 @@ export function SignIn() {
 }
 
 export default SignIn;
+
 
 
 
