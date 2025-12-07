@@ -35,9 +35,6 @@ Isso aumenta a clareza, manutenção e extensibilidade da aplicação.
 - `CalcularFGTS.java`
 - (e outros cálculos do sistema)
 
-### **Classe que utiliza as Estratégias (Contexto)**
-- `FolhaService` (ou serviço equivalente no projeto)
-
 ---
 
 
