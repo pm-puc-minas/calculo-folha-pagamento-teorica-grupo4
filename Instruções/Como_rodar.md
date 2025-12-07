@@ -1,6 +1,6 @@
 ## 💻 README: Guia de Inicialização do Projeto
 
-Este documento fornece as instruções essenciais para configurar e rodar o projeto **calculo-folha-pagamento-teorica-grupo4**, que inclui um Front-End em JavaScript/Framework (provavelmente React/Vue) e um Back-End em Spring Boot (Java).
+Este documento fornece as instruções essenciais para configurar e rodar o projeto **calculo-folha-pagamento-teorica-grupo4**, que inclui um Front-End em JavaScript/Framework (React) e um Back-End em Spring Boot (Java).
 
 ---
 
@@ -20,7 +20,7 @@ O Front-End é a interface do usuário e requer Node.js e npm.
     npm install
     ```
 
-3.  **Instale a biblioteca de gráficos `recharts` (se necessário):**
+3.  **Instale a biblioteca de gráficos `recharts`:**
     ```bash
     npm install recharts
     ```
@@ -41,7 +41,7 @@ O Back-End é o servidor da aplicação e exige a configuração de um banco de 
 #### **Passos:**
 
 1.  **Configuração do Banco de Dados:**
-    * No diretório do Back-End, localize o arquivo de propriedades (ex: `application.properties` ou `application.yml`).
+    * No diretório do Back-End, localize o arquivo de propriedades (ex: `application.properties`).
     * **Ajuste** as configurações de conexão do banco de dados (DataSource) com suas credenciais:
         * `spring.datasource.username=seu_login`
         * `spring.datasource.password=sua_senha`
