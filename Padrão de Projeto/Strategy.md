@@ -92,6 +92,10 @@ public class CalcularINSS implements ICalculoDescontos {
     }
 }
 
+```
 
 ## 🧱 Diagrama UML (Padrão Strategy)
+
+![Diagrama Strategy](Strategy.png)
+
 
