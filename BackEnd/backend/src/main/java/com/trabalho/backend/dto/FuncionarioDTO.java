@@ -9,7 +9,7 @@ public class FuncionarioDTO {
     private String cargo;
     private LocalDate dataAdmissao;
 
-    private boolean possuiFolha; // <--- NOVO
+    private boolean possuiFolha; 
 
     public FuncionarioDTO(){}
 
@@ -18,7 +18,7 @@ public class FuncionarioDTO {
         this.nome = nome;
         this.cargo = cargo;
         this.dataAdmissao = dataAdmissao;
-        this.possuiFolha = possuiFolha; // <--- NOVO
+        this.possuiFolha = possuiFolha; 
     }
 
     public boolean isPossuiFolha() {

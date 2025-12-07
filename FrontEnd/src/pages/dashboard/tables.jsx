@@ -69,7 +69,7 @@ export function Tables() {
       );
 
       if (!response.ok) {
-        alert("Erro ao deletar funcionário.");
+        alert("É preciso deletar a folha primeiro, para que o funcionário seja deletado!!");
         return;
       }
 
