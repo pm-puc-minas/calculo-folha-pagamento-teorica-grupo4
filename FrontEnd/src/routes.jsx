@@ -4,7 +4,7 @@ import {
   TableCellsIcon,
 } from "@heroicons/react/24/solid";
 import { Home, Profile, Tables, FolhaFuncionario } from "@/pages/dashboard"; // importar FolhaFuncionario
-import { SignIn, SignUp } from "@/pages/auth";
+import { SignIn, SignUp, SignUpAdmin } from "@/pages/auth";
 
 const icon = {
   className: "w-5 h-5 text-inherit",
@@ -57,9 +57,15 @@ export const routes = [
         path: "/cadastrar_funcionarios",
         element: <SignUp />,
       },
+
+      {
+        icon: <UserCircleIcon {...icon} />,
+        name: "sign up admin",
+        path: "/sign-up-admin",
+        element: <SignUpAdmin />,
+      },
     ],
   },
 ];
 
 export default routes;
-
