@@ -42,10 +42,45 @@ export function SignUpAdmin() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Dados do Administrador:", formData);
-    alert("Administrador cadastrado");
+
+    if (formData.senha !== formData.confirmarSenha) {
+      alert("As senhas não coincidem!");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:8080/admin/registrar", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          nome: formData.nome,
+          cpf: formData.cpf.replace(/\D/g, ""), // envia CPF sem máscara
+          email: formData.email,
+          senha: formData.senha,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Erro ao cadastrar admin");
+      }
+
+      alert("Administrador cadastrado com sucesso!");
+      setFormData({
+        nome: "",
+        cpf: "",
+        email: "",
+        senha: "",
+        confirmarSenha: "",
+      });
+
+    } catch (error) {
+      console.error(error);
+      alert("Erro ao cadastrar administrador.");
+    }
   };
 
   return (
@@ -57,7 +92,7 @@ export function SignUpAdmin() {
           alt="Cadastro de Admin"
         />
       </div>
-      
+
       <div className="w-full lg:w-3/5 flex flex-col items-center justify-center">
         <div className="text-center">
           <Typography variant="h2" className="font-bold mb-4">
@@ -134,3 +169,4 @@ export function SignUpAdmin() {
 }
 
 export default SignUpAdmin;
+
